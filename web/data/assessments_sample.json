@@ -1,0 +1,812 @@
+[
+  {
+    "building_id": "bldg_sample_001",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 3,
+    "V": 3,
+    "I": 4,
+    "P": 4,
+    "C": 70,
+    "priority": "A",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "3",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 2,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "hospital",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "70",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "受変電設備の設置階",
+      "非常用発電の設置階",
+      "中央監視の位置",
+      "地下出入口の止水設備・止水高さ",
+      "排水ポンプの非常電源",
+      "系統構成（単一系統か）"
+    ],
+    "priority_checks": [
+      "受変電設備の設置階",
+      "地下出入口の止水高さ",
+      "排水ポンプの非常電源",
+      "全館停止波及の有無"
+    ],
+    "measures": [
+      "M-01",
+      "M-07",
+      "M-10"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_002",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 2,
+    "V": 2,
+    "I": 2,
+    "P": 3,
+    "C": 40,
+    "priority": "A*",
+    "priority_raised_by_low_confidence": true,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "2",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "station",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "40",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "受変電設備の設置階",
+      "非常用発電の設置階",
+      "中央監視の位置",
+      "地下出入口の止水設備・止水高さ",
+      "排水ポンプの非常電源"
+    ],
+    "priority_checks": [
+      "受変電設備の設置階",
+      "地下出入口の止水高さ",
+      "排水ポンプの非常電源"
+    ],
+    "measures": [
+      "M-01",
+      "M-07"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_003",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 1,
+    "V": 4,
+    "I": 4,
+    "P": 3,
+    "C": 80,
+    "priority": "A",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "1",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 2,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "datacenter",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "80",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "受変電設備の設置階",
+      "非常用発電の設置階",
+      "中央監視の位置",
+      "地下出入口の止水設備・止水高さ",
+      "排水ポンプの非常電源",
+      "系統構成（単一系統か）"
+    ],
+    "priority_checks": [
+      "受変電設備の設置階",
+      "地下出入口の止水高さ",
+      "排水ポンプの非常電源",
+      "全館停止波及の有無"
+    ],
+    "measures": [
+      "M-01",
+      "M-07",
+      "M-10"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_004",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 2,
+    "V": 1,
+    "I": 3,
+    "P": 2,
+    "C": 60,
+    "priority": "B",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "2",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "public_critical",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "60",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "系統構成（単一系統か）"
+    ],
+    "priority_checks": [
+      "全館停止波及の有無"
+    ],
+    "measures": [
+      "M-07",
+      "M-10"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_005",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 2,
+    "V": 2,
+    "I": 1,
+    "P": 3,
+    "C": 30,
+    "priority": "B*",
+    "priority_raised_by_low_confidence": true,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "2",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "welfare",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "30",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "受変電設備の設置階",
+      "非常用発電の設置階",
+      "中央監視の位置",
+      "地下出入口の止水設備・止水高さ",
+      "排水ポンプの非常電源"
+    ],
+    "priority_checks": [
+      "受変電設備の設置階",
+      "地下出入口の止水高さ",
+      "排水ポンプの非常電源"
+    ],
+    "measures": [
+      "M-01",
+      "M-07"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_006",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 2,
+    "V": 0,
+    "I": 4,
+    "P": 1,
+    "C": 65,
+    "priority": "B",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "2",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 0,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "commercial_large",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "65",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "系統構成（単一系統か）"
+    ],
+    "priority_checks": [
+      "全館停止波及の有無"
+    ],
+    "measures": []
+  },
+  {
+    "building_id": "bldg_sample_007",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 2,
+    "V": 1,
+    "I": 0,
+    "P": 2,
+    "C": 25,
+    "priority": "C*",
+    "priority_raised_by_low_confidence": true,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "2",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "commercial",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "25",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [],
+    "priority_checks": [],
+    "measures": [
+      "M-07"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_008",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 1,
+    "V": 0,
+    "I": 3,
+    "P": 0,
+    "C": 55,
+    "priority": "C",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "1",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 0,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "office",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "55",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "系統構成（単一系統か）"
+    ],
+    "priority_checks": [
+      "全館停止波及の有無"
+    ],
+    "measures": []
+  },
+  {
+    "building_id": "bldg_sample_009",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 0,
+    "V": 2,
+    "I": 4,
+    "P": 0,
+    "C": 80,
+    "priority": "C",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "0",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "logistics",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "80",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "受変電設備の設置階",
+      "非常用発電の設置階",
+      "中央監視の位置",
+      "地下出入口の止水設備・止水高さ",
+      "排水ポンプの非常電源",
+      "系統構成（単一系統か）"
+    ],
+    "priority_checks": [
+      "受変電設備の設置階",
+      "地下出入口の止水高さ",
+      "排水ポンプの非常電源",
+      "全館停止波及の有無"
+    ],
+    "measures": [
+      "M-01"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_010",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 0,
+    "V": 0,
+    "I": 0,
+    "P": 0,
+    "C": 90,
+    "priority": "D",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "0",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 0,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "school",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "90",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [],
+    "priority_checks": [],
+    "measures": []
+  },
+  {
+    "building_id": "bldg_sample_011",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 1,
+    "V": 0,
+    "I": 0,
+    "P": 0,
+    "C": 45,
+    "priority": "D",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "1",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 0,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "residential_large",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "45",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [],
+    "priority_checks": [],
+    "measures": []
+  },
+  {
+    "building_id": "bldg_sample_012",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 4,
+    "V": 4,
+    "I": 4,
+    "P": 4,
+    "C": 95,
+    "priority": "A",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "4",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 2,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "commercial",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "95",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "受変電設備の設置階",
+      "非常用発電の設置階",
+      "中央監視の位置",
+      "地下出入口の止水設備・止水高さ",
+      "排水ポンプの非常電源",
+      "系統構成（単一系統か）"
+    ],
+    "priority_checks": [
+      "受変電設備の設置階",
+      "地下出入口の止水高さ",
+      "排水ポンプの非常電源",
+      "全館停止波及の有無"
+    ],
+    "measures": [
+      "M-01",
+      "M-07",
+      "M-10"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_013",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "assessed",
+    "H": 3,
+    "V": 1,
+    "I": 2,
+    "P": 3,
+    "C": 70,
+    "priority": "B",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "3",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "office",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "70",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [],
+    "priority_checks": [],
+    "measures": [
+      "M-07"
+    ]
+  },
+  {
+    "building_id": "bldg_sample_014",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "insufficient_data",
+    "H": 0,
+    "V": 1,
+    "I": 2,
+    "P": 0,
+    "C": 15,
+    "priority": "D",
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "inland_depth",
+        "value": "0",
+        "source": "sample_tokyo_inundation_meguro_2024",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class",
+        "value": "office",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      },
+      {
+        "axis": "C",
+        "rule": "confidence_weights",
+        "value": "15",
+        "source": "sample_score_engine",
+        "fetched_at": "2026-09-09T00:00:00Z"
+      }
+    ],
+    "missing_info": [
+      "内水・洪水データが未整備のため一次評価不能"
+    ],
+    "priority_checks": [
+      "内水・洪水データの追加取得"
+    ],
+    "measures": []
+  },
+  {
+    "building_id": "bldg_sample_015",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample-2026-09-09",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "out_of_scope",
+    "H": null,
+    "V": null,
+    "I": null,
+    "P": null,
+    "C": null,
+    "priority": null,
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "status",
+        "rule": "usage_class",
+        "value": "residential",
+        "source": "sample_plateau_meguro_2025",
+        "fetched_at": "2026-08-15T00:00:00Z"
+      }
+    ],
+    "missing_info": [],
+    "priority_checks": [],
+    "measures": []
+  }
+]
