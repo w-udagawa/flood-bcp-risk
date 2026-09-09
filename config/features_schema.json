@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "flood-bcp-risk building features v0.1.0",
+  "description": "ETL出力かつスコアリングエンジン入力。docs/03_スコアリング仕様.md 第1章に対応。CSVでは null は空文字、boolean は true/false。",
+  "type": "object",
+  "required": [
+    "building_id"
+  ],
+  "properties": {
+    "building_id": {
+      "type": "string",
+      "description": "PLATEAU gml:id"
+    },
+    "ward_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "5桁市区町村コード"
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "施設名（任意）"
+    },
+    "usage_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "PLATEAU bldg:usage コード"
+    },
+    "usage_class": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "hospital|station|datacenter|public_critical|commercial_large|commercial|office|welfare|logistics|school|residential_large|residential|other"
+    },
+    "storeys_above": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "地上階数"
+    },
+    "storeys_below": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "地下階数"
+    },
+    "height_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "計測高さ"
+    },
+    "year_built": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "建築年"
+    },
+    "total_floor_area_m2": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "延床面積"
+    },
+    "footprint_area_m2": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "建築面積"
+    },
+    "inland_depth_min_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "内水浸水深階級下限（区域外は0、未整備はnull）"
+    },
+    "inland_depth_max_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "内水浸水深階級上限"
+    },
+    "river_depth_min_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "洪水浸水深階級下限"
+    },
+    "river_depth_max_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "洪水浸水深階級上限"
+    },
+    "river_duration_h": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "浸水継続時間"
+    },
+    "surge_depth_min_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "高潮浸水深階級下限"
+    },
+    "surge_depth_max_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "高潮浸水深階級上限"
+    },
+    "flood_history_flag": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "浸水実績（建物または30m以内）"
+    },
+    "flood_history_years": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "実績年カンマ区切り"
+    },
+    "ground_elev_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "建物内DEM平均"
+    },
+    "road_elev_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "周辺道路DEM平均"
+    },
+    "rel_elev_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "ground_elev_m - road_elev_m"
+    },
+    "depression_flag": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "局所窪地内"
+    },
+    "landform_class": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "地形分類名"
+    },
+    "station_ridership": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "最寄り駅1日乗降客数"
+    },
+    "is_station_facility": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "駅舎・駅ビル"
+    },
+    "hospital_flag": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "病院・救急"
+    },
+    "welfare_flag": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "入所系福祉施設"
+    },
+    "public_flag": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "庁舎・防災拠点"
+    },
+    "alt_facility_dist_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "同用途代替施設距離"
+    },
+    "data_versions": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "使用データ版識別子"
+    },
+    "hazard_source_year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "主ハザードデータの公表年（確信度減点用）"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,30 @@
+# TASK-003 ETL パイプライン骨格（実行は別環境）
+
+- 担当：Sonnet 5（実装者） 発注：Fable
+- 目的：オープンデータから `config/features_schema.json` 準拠の特徴量テーブルを生成する ETL を、ローカル環境で実行できる形で整備する。本開発環境では PyPI・外部サイトに到達できないため、**ここでは構文検証と純 Python 部分のテストのみ**行う。
+- 前提・制約：
+  - 作業ディレクトリ：`flood-bcp-risk/pipelines/` 配下のみ（`floodbcp/` は別タスクが作業中。触らない）。
+  - GIS 依存（geopandas, shapely, rasterio, pyproj, duckdb, requests 等）は各スクリプト冒頭の docstring に `Requires:` として明記し、import はスクリプト内の関数内または try/except で行い、`python3 -m py_compile` が通ること。
+  - 依存を使わない純 Python 部分（用途コード→usage_class 写像、浸水深階級→min/max 写像、標高タイル座標計算、CSV 書き出し）は `pipelines/lib/` に分離し、標準ライブラリだけで unittest 可能にする。
+  - 対象：目黒区（PLATEAU 2025）・世田谷区（PLATEAU 2023）。
+- 入力：`docs/02_要件定義書.md` 第 6・9・10 章、`docs/03_スコアリング仕様.md` 第 1・2 章、`docs/research/A〜C`、`config/features_schema.json`
+- 出力：
+  - `pipelines/README.md`：全体フロー図、各ステップの入出力、実行手順（ローカル）、必要ツール（PLATEAU GIS Converter、tippecanoe 等）、未検証事項（要件定義 16 章 V-xx）への対応箇所
+  - `pipelines/requirements-etl.txt`
+  - `pipelines/manifest.json`：取得するデータの一覧（source_id, url, 期待ファイル名, 保存先, ログイン要否, 手動取得フラグ）。URL は調査レポートにあるものだけ。不明は `"url": null, "manual": true`。
+  - `pipelines/00_download.py`：manifest に従い取得（手動取得は指示を表示）
+  - `pipelines/10_plateau_to_gpkg.py`：PLATEAU GIS Converter の CLI 呼び出しラッパ（CityGML→GeoPackage）。属性の抽出列：gml:id, usage, storeysAboveGround, storeysBelowGround, measuredHeight, yearOfConstruction, uro:BuildingDetailAttribute の totalFloorArea/buildingFootprintArea, 浸水リスク属性（河川・内水・高潮の depth/rank/duration）。収録率レポート（各列の非 null 率）を出力する機能を含める（V-01 対応）。
+  - `pipelines/20_hazard_join.py`：東京都浸水予想区域図 / A31 / A49 ポリゴンと建物ポリゴンの空間結合。建物ごとに交差する階級の最大（下限・上限）を取る。ソースごとの階級コード→(min,max) 写像は `pipelines/lib/depth_classes.py` に置き、**写像表は未検証（V-02）である旨をコメントと README に明記**し、想定される階級（例：0.1 未満 / 0.1–0.5 / 0.5–1.0 / 1.0–2.0 / 2.0–5.0 / 5.0 以上、国土数値情報：0.5 未満 / 0.5–3.0 / 3.0–5.0 / 5.0–10 / 10–20）を設定ファイル化する。
+  - `pipelines/30_terrain.py`：地理院標高タイル（dem5a txt）を取得し、建物内 DEM 平均、30 m 以内道路の DEM 平均、rel_elev、簡易窪地判定（Priority-Flood は使わず、まず「建物内平均が半径 50 m の平均より 0.3 m 以上低い」を暫定窪地指標とし、richdem/whitebox 利用時の差し替え点を明記）。タイル座標計算は `pipelines/lib/tiles.py`（純 Python）。
+  - `pipelines/40_context.py`：S12/N02/P04/P14/P02 から station_ridership, is_station_facility, hospital_flag, welfare_flag, public_flag, alt_facility_dist_m
+  - `pipelines/50_history.py`：浸水実績ポリゴン（手動作成の GeoJSON を想定）と 30 m バッファ結合
+  - `pipelines/60_export_features.py`：全てを結合して `features.csv` / `features.jsonl` を出力。スキーマ検証（`config/features_schema.json` に対し、標準ライブラリで型チェック）。
+  - `pipelines/lib/usage_map.py`：PLATEAU `bldg:usage` コード（Building_usage.xml：例 401 業務施設, 402 商業施設, 403 宿泊施設, 404 商業系複合施設, 411 住宅, 412 共同住宅, 413 店舗等併用住宅, 414 店舗等併用共同住宅, 415 作業所併用住宅, 421 官公庁施設, 422 文教厚生施設, 431 運輸倉庫施設, 441 工場, 451 農林漁業用施設, 452 供給処理施設, 453 防衛施設, 454 その他, 461 空地, 462 不明 等。**コード表は調査で未検証。コメントで要確認と書く**）と規模・フラグから usage_class を決める純 Python 関数。仕様 2 章の規模条件（commercial_large は延床 ≥ 10,000 等）を実装。
+  - `pipelines/tests/test_lib.py`：lib の unittest（usage_map の境界、depth_classes の写像、tiles の座標計算）
+- 受入基準：
+  - [ ] `python3 -m py_compile pipelines/*.py pipelines/lib/*.py` が通る
+  - [ ] `python3 -m unittest discover -s pipelines/tests -v` が通る（標準ライブラリのみ）
+  - [ ] README に「本環境では未実行。ローカルで実行して V-01〜V-06 を検証する」旨と手順がある
+  - [ ] manifest の URL が調査レポートに存在するものだけである
+- 禁止事項：`floodbcp/`・`docs/` の編集。外部サイトへのアクセス試行。URL の捏造。
+- 完了報告に含めること：ファイル一覧、テスト結果、設計上の未決事項（Fable が判断するもの）。

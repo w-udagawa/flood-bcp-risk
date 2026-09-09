@@ -1,0 +1,24 @@
+# TASK-005 静的ビューア試作（MapLibre GL JS）
+
+- 担当：Sonnet 5（実装者） 発注：Fable
+- 目的：評価結果（assessment）を地図と建物カルテで閲覧できる静的 Web の試作。ビルド不要、単一 HTML + JS + サンプル GeoJSON。
+- 前提・制約：
+  - 作業ディレクトリ：`flood-bcp-risk/web/` のみ。
+  - npm は使えない。MapLibre GL JS は CDN（unpkg / jsDelivr）から `<script>` で読み込む。バージョンを固定（例 4.x 系）。本環境ではブラウザ確認ができないので、**HTML/JS の構文的妥当性と、データ結合ロジックのユニットテスト（Node 22 標準の `node --test`、外部パッケージ不可）**で品質を担保する。
+  - ベースマップは地理院タイル（淡色地図 `https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png`）を出典表示付きで使う。
+  - サンプルデータは**架空**。目黒区自由が丘駅周辺（おおよそ 35.6075N, 139.6690E）の適当な矩形ポリゴン 15 件程度を生成する。実在施設名は使わない。
+- 入力：`docs/02_要件定義書.md` 第 7・11 章（FR-04〜FR-07、画面要件）、`docs/03_スコアリング仕様.md` 第 11〜13 章（出力スキーマ、不足情報、対策）
+- 出力：
+  - `web/index.html`：地図、レイヤ切替（優先度 / H / V / I / C）、フィルタ（用途、優先度、要確認のみ）、検索（名称・building_id）、クリックでカルテ表示（サイドパネル）、凡例、出典・免責表示（NFR-08 の文言：「本表示はオープンデータによる一次スクリーニングであり、安全性を保証するものではありません」）
+  - `web/app.js`：データ読込、色分け（priority A=赤 B=橙 C=黄 D=灰、`*` 付きは枠線強調）、カルテ描画（優先度、4 等級、C、status、evidence 表、missing_info、priority_checks、measures をラベル付きで）
+  - `web/lib/join.js`：`buildings.geojson` と `assessments.json` を building_id で結合する純関数と、色・ラベル関数（ブラウザと Node の両方で使えるよう UMD 風に）
+  - `web/data/buildings_sample.geojson`、`web/data/assessments_sample.json`（スキーマは仕様 11 章に厳密に従う）、`web/data/measures.json`（M-01〜M-11 の名称）
+  - `web/tests/join.test.js`（`node --test web/tests/`）
+  - `web/README.md`：起動方法（`python3 -m http.server` で `web/` を配信）、CDN 依存、PMTiles への置き換え方針（フェーズ M3）、未検証事項（ブラウザ未確認）
+- 受入基準：
+  - [ ] `node --test web/tests/` が通る
+  - [ ] `node --check web/app.js web/lib/join.js` が通る
+  - [ ] HTML に出典（地理院タイル、PLATEAU、東京都、国土数値情報の表記枠）と免責文がある
+  - [ ] 実在施設名・実在住所を含まない
+- 禁止事項：`floodbcp/`・`pipelines/`・`docs/` の編集。npm install の試行。
+- 完了報告に含めること：ファイル一覧、テスト結果、ブラウザ未確認である旨、仕様との差異。

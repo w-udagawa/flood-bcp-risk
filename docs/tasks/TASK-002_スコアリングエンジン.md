@@ -1,0 +1,43 @@
+# TASK-002 スコアリングエンジン実装（純 Python）
+
+- 担当：Sonnet 5（実装者） 発注：Fable
+- 目的：`docs/03_スコアリング仕様.md` を、Python 3.11 標準ライブラリのみで忠実に実装し、テストで固定する。
+- 前提・制約：
+  - **外部ライブラリ禁止**（PyYAML も不可）。設定は JSON。
+  - 作業ディレクトリ：`flood-bcp-risk/`。パッケージ名 `floodbcp`。
+  - 閾値・マトリクス・重み・対策条件はコードに埋め込まず `config/scoring_v0.1.0.json` と `config/measures.json` に置き、エンジンはそれを読む。
+  - 入力スキーマは `config/features_schema.json`。CSV 読込時の型変換（空文字→None、"true"/"false"→bool、数値）を実装する。
+- 入力：`docs/03_スコアリング仕様.md`（全章）、`config/features_schema.json`、`docs/02_要件定義書.md` 第 5 章・第 9 章
+- 出力：
+  - `floodbcp/__init__.py`（`__version__`, `SCORE_VERSION = "0.1.0"`）
+  - `floodbcp/features.py`：Feature データクラスと CSV/JSONL ローダ、型変換、スキーマ検証（未知フィールドはエラー）
+  - `floodbcp/questionnaire.py`：Tier 1 回答（Q1〜Q12、値は `yes|no|unknown`）の読込（CSV: building_id,q01..q12）
+  - `floodbcp/scoring.py`：`assess(feature, answers=None, config=None) -> Assessment`。H/V/I/C/P/priority/status/evidence/missing_info/priority_checks/measures を仕様どおり算出。evidence は仕様 11 章の形式。
+  - `floodbcp/measures.py`：対策候補ルール評価
+  - `floodbcp/report.py`：assessment を JSON / CSV に書き出し
+  - `floodbcp/__main__.py`：CLI `python -m floodbcp assess --features <csv|jsonl> [--answers <csv>] --out <json> [--csv <csv>] [--config <json>]` と `python -m floodbcp explain --features ... --building-id ...`（人間向けにカルテ文字列を表示）
+  - `config/scoring_v0.1.0.json`、`config/measures.json`
+  - `tests/test_scoring.py` ほか（unittest）。最低限：
+    - 仕様の H 閾値境界（0.49/0.5/0.99/1.0/2.99/3.0）
+    - H 補正が重複しても +1 まで、H=0 かつ実績ありで H=2
+    - V の基礎点・不明時推定・加減点・上下限
+    - Tier 1 の Q3=yes で V=4、止水設備 3 条件で −2
+    - I の基礎点と加点
+    - C の重み合計と減点
+    - P・優先度マトリクスの全セル（表をそのままテーブル駆動で検証）
+    - 低確信度による引き上げと `*` 表記
+    - status（out_of_scope / insufficient_data）
+    - 自由が丘型シナリオ：commercial_large、storeys_below=1、inland 0.5–1.0 m、延床 ≥ 10,000、flood_history_flag=true → 優先度 A
+    - 病院で地下なし・ハザードなし → D または C
+    - CLI のエンドツーエンド（サンプル CSV → JSON 出力）
+  - `data/samples/features_sample.csv`：**架空**の建物 15 件以上（ファイル冒頭コメント行は使わず、README に架空である旨を書く）。多様な用途・欠損パターンを含める。`data/samples/answers_sample.csv` も。
+  - `data/samples/README.md`：架空データである旨、列の説明
+  - `floodbcp/README.md`：使い方、設計（設定駆動、evidence の意味）
+- 受入基準：
+  - [ ] `cd flood-bcp-risk && python3 -m unittest discover -s tests -v` が全件成功
+  - [ ] `python3 -m floodbcp assess --features data/samples/features_sample.csv --answers data/samples/answers_sample.csv --out /tmp/out.json --csv /tmp/out.csv` が成功し、優先度 A〜D と status の各種が出る
+  - [ ] `python3 -c "import floodbcp"` が標準ライブラリのみで通る（`grep -r "^import\|^from" floodbcp/` に外部パッケージがない）
+  - [ ] マトリクス・閾値の数値がソースコードにハードコードされていない（JSON から読む）
+  - [ ] 仕様と実装が食い違う箇所があれば、実装を仕様に合わせ、仕様の曖昧点は完了報告に列挙（勝手に仕様を変えない）
+- 禁止事項：外部依存の追加、仕様の独自変更、`docs/` の編集。
+- 完了報告に含めること：テスト結果の要約、仕様の曖昧点・矛盾（どう解釈したか）、サンプルの優先度分布。
