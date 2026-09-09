@@ -1,0 +1,39 @@
+# flood-bcp-risk ETL（pipelines/）ローカル実行用の依存パッケージ。
+#
+# 本開発環境（PyPI・外部サイトへ到達不可）ではインストール・実行できない。
+# ローカル環境（ネットワーク制限なし）で
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r pipelines/requirements-etl.txt
+# を実行すること。バージョンは目安（動作確認は未実施）。
+#
+# GIS 系パッケージ（geopandas/rasterio 等）は OS 依存のバイナリ依存
+# （GDAL/GEOS/PROJ）が必要になることが多い。Ubuntu では
+#   sudo apt-get install -y gdal-bin libgdal-dev libgeos-dev libproj-dev
+# を先に実行してから pip install するか、conda/mamba（conda-forge チャンネル）
+# の利用を推奨する。
+
+# 空間データ処理
+geopandas>=0.14
+shapely>=2.0
+fiona>=1.9
+pyproj>=3.6
+rasterio>=1.3
+
+# 高速な空間結合・分析（任意、DuckDB spatial 拡張）
+duckdb>=0.10
+
+# HTTP 取得（00_download.py）
+requests>=2.31
+
+# 表形式データ操作（任意、pandas は geopandas の依存で入る場合が多い）
+pandas>=2.0
+
+# 窪地・流下方向解析（30_terrain.py、Priority-Flood 系の高度化時に使用。
+# 暫定実装（半径50m平均比較）では未使用。差し替え時に有効化する）
+# richdem>=0.3.4
+# whitebox>=2.3.1
+
+# 外部ツール（pip ではなく別途インストールが必要、PATH に通しておくこと）
+# - PLATEAU GIS Converter（CityGML -> GeoPackage 変換、10_plateau_to_gpkg.py が呼び出す）
+#   https://github.com/Project-PLATEAU/PLATEAU-GIS-Converter
+# - tippecanoe（features -> PMTiles 生成。pipelines/ の対象外、tiles/ 工程で使用）

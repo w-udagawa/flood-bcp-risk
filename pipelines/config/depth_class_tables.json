@@ -1,0 +1,66 @@
+{
+  "_comment": "浸水深階級コード -> (下限m, 上限m) の写像テーブル。V-02（東京都浸水予想区域図の実属性）は未検証のため、想定される階級区分を仮に設定したものである。実データ取得後、pipelines/20_hazard_join.py 実行前に本ファイルを実属性値に合わせて更新すること。上限が無い最上位階級は null。",
+  "_verification": "V-02",
+  "sources": {
+    "tokyo_inundation_map": {
+      "label": "東京都浸水予想区域図（城南地区河川流域ほか、内水・外水）",
+      "source_url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t000014d0000000029",
+      "verified": false,
+      "note": "docs/tasks/TASK-003_ETL骨格.md に記載の想定階級（0.1未満/0.1-0.5/0.5-1.0/1.0-2.0/2.0-5.0/5.0以上）をそのまま採用。実 Shape 属性のフィールド名・コード値は未確認。",
+      "class_codes": {
+        "1": [0.0, 0.1],
+        "2": [0.1, 0.5],
+        "3": [0.5, 1.0],
+        "4": [1.0, 2.0],
+        "5": [2.0, 5.0],
+        "6": [5.0, null]
+      }
+    },
+    "ksj_a31": {
+      "label": "国土数値情報 A31 洪水浸水想定区域（河川単位）",
+      "source_url": "https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A31.html",
+      "verified": false,
+      "note": "docs/tasks/TASK-003_ETL骨格.md に記載の想定階級（0.5未満/0.5-3.0/3.0-5.0/5.0-10/10-20）を採用。製品仕様書 KS-PS-A31a-v4_2.pdf の A31_浸水ランクコード表による裏取りは未実施。",
+      "class_codes": {
+        "1": [0.0, 0.5],
+        "2": [0.5, 3.0],
+        "3": [3.0, 5.0],
+        "4": [5.0, 10.0],
+        "5": [10.0, 20.0]
+      }
+    },
+    "ksj_a51": {
+      "label": "国土数値情報 A51 雨水出水（内水）浸水想定区域",
+      "source_url": "https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A51-2024.html",
+      "verified": false,
+      "note": "A31 と同一の階級区分を仮採用（国土数値情報の浸水ランクは A31/A51/A49 で共通の可能性が高いという推定。製品仕様書 KS-PS-A51-v2_0.pdf 未確認）。東京都・神奈川県が収録対象自治体に含まれるか自体も未確認（V-05）。",
+      "class_codes": {
+        "1": [0.0, 0.5],
+        "2": [0.5, 3.0],
+        "3": [3.0, 5.0],
+        "4": [5.0, 10.0],
+        "5": [10.0, 20.0]
+      }
+    },
+    "ksj_a49": {
+      "label": "国土数値情報 A49 高潮浸水想定区域",
+      "source_url": "https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A49-v1_1.html",
+      "verified": false,
+      "note": "A31 と同一の階級区分を仮採用（製品仕様書 KS-PS-A49-v1_2.pdf 未確認）。対象は大田区・川崎市沿岸部のみ有効化する想定（目黒区・世田谷区は非沿岸のため通常 null/区域外）。",
+      "class_codes": {
+        "1": [0.0, 0.5],
+        "2": [0.5, 3.0],
+        "3": [3.0, 5.0],
+        "4": [5.0, 10.0],
+        "5": [10.0, 20.0]
+      }
+    },
+    "plateau_risk_attribute": {
+      "label": "PLATEAU 建物付与 浸水リスク属性（uro:BuildingRiverFloodingRiskAttribute 等の rankOrg/depth）",
+      "source_url": null,
+      "verified": false,
+      "note": "属性の実フィールド構成・コード値は未確認（V-01）。depth が実数（m）で収録されている場合は本テーブルを使わず depth をそのまま下限・上限に用いる設計とし、コード値（ランク）で収録されている場合のみ本テーブル相当の写像が必要になる。実データ確認後に追記すること。",
+      "class_codes": {}
+    }
+  }
+}
