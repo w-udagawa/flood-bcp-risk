@@ -1,0 +1,371 @@
+{
+  "$comment": "docs/03_スコアリング仕様.md 準拠。全ての閾値・マトリクス・重みはここに置き、floodbcp はこの値を読むだけでロジックを持たない（対策条件は measures.json）。",
+  "score_version": "0.1.0",
+
+  "status": {
+    "out_of_scope_usage_classes": ["residential"],
+    "other_usage_class": "other",
+    "other_min_total_floor_area_m2": 3000
+  },
+
+  "h": {
+    "depth_source_fields": [
+      ["inland_depth_min_m", "inland_depth_max_m", "inland_depth"],
+      ["river_depth_min_m", "river_depth_max_m", "river_depth"],
+      ["surge_depth_min_m", "surge_depth_max_m", "surge_depth"]
+    ],
+    "insufficient_data_fields": ["inland_depth_min_m", "river_depth_min_m"],
+    "provisional_grade_when_insufficient_but_evidence": 2,
+    "base_grade_table": [
+      {"min": 0, "min_inclusive": true, "max": 0, "max_inclusive": true, "grade": 0},
+      {"min": 0, "min_inclusive": false, "max": 0.5, "max_inclusive": false, "grade": 1},
+      {"min": 0.5, "min_inclusive": true, "max": 1.0, "max_inclusive": false, "grade": 2},
+      {"min": 1.0, "min_inclusive": true, "max": 3.0, "max_inclusive": false, "grade": 3},
+      {"min": 3.0, "min_inclusive": true, "max": null, "max_inclusive": true, "grade": 4}
+    ],
+    "zero_grade_with_history_override_grade": 2,
+    "corrections": [
+      {
+        "id": "history",
+        "label": "flood_history_flag = true",
+        "delta": 1,
+        "condition": {"path": "features.flood_history_flag", "op": "is_true"}
+      },
+      {
+        "id": "depression_or_below_road",
+        "label": "depression_flag = true または rel_elev_m <= -0.3",
+        "delta": 1,
+        "condition": {
+          "any": [
+            {"path": "features.depression_flag", "op": "is_true"},
+            {"path": "features.rel_elev_m", "op": "lte", "value": -0.3}
+          ]
+        }
+      },
+      {
+        "id": "landform",
+        "label": "landform_class が谷底低地・旧河道・後背湿地・湿地",
+        "delta": 1,
+        "condition": {
+          "path": "features.landform_class",
+          "op": "in",
+          "value": ["谷底低地", "旧河道", "後背湿地", "湿地"]
+        }
+      }
+    ],
+    "correction_cap": 1,
+    "min": 0,
+    "max": 4
+  },
+
+  "v": {
+    "min": 0,
+    "max": 4,
+    "base_table": [
+      {"condition": {"path": "features.storeys_below", "op": "eq", "value": 0}, "value": 0},
+      {"condition": {"path": "features.storeys_below", "op": "eq", "value": 1}, "value": 2},
+      {"condition": {"path": "features.storeys_below", "op": "gte", "value": 2}, "value": 3}
+    ],
+    "unknown_estimate_table": [
+      {
+        "condition": {
+          "path": "features.usage_class",
+          "op": "in",
+          "value": ["commercial_large", "station", "hospital", "residential_large"]
+        },
+        "value": 2
+      },
+      {
+        "condition": {
+          "all": [
+            {"path": "features.usage_class", "op": "eq", "value": "office"},
+            {"path": "features.total_floor_area_m2", "op": "gte", "value": 10000}
+          ]
+        },
+        "value": 2
+      },
+      {"condition": {"op": "always"}, "value": 1}
+    ],
+    "adjustments": [
+      {
+        "id": "electric_room_likely",
+        "label": "total_floor_area_m2 >= 3000 または storeys_above >= 6",
+        "delta": 1,
+        "condition": {
+          "any": [
+            {"path": "features.total_floor_area_m2", "op": "gte", "value": 3000},
+            {"path": "features.storeys_above", "op": "gte", "value": 6}
+          ]
+        }
+      },
+      {
+        "id": "below_road",
+        "label": "rel_elev_m <= -0.3",
+        "delta": 1,
+        "condition": {"path": "features.rel_elev_m", "op": "lte", "value": -0.3}
+      },
+      {
+        "id": "post_guideline_design",
+        "label": "year_built >= 2021",
+        "delta": -1,
+        "condition": {"path": "features.year_built", "op": "gte", "value": 2021}
+      },
+      {
+        "id": "station_usage",
+        "label": "usage_class = station",
+        "delta": 1,
+        "condition": {"path": "features.usage_class", "op": "eq", "value": "station"}
+      }
+    ],
+    "tier1": {
+      "q3_yes_fixed_value": 4,
+      "q3_no_q4_yes_q5_no_cap": 1,
+      "q1_no_reset_base_to": 0,
+      "q2_yes_delta": 1,
+      "q7_q8_q9_all_yes_delta": -2,
+      "q7_yes_q8_or_q9_not_yes_delta": -1,
+      "q6_yes_delta": -1,
+      "q10_yes_delta": 1
+    }
+  },
+
+  "i": {
+    "min": 0,
+    "max": 4,
+    "default_value": 1,
+    "base_table": [
+      {
+        "id": "critical_usage",
+        "condition": {
+          "path": "features.usage_class",
+          "op": "in",
+          "value": ["hospital", "datacenter", "public_critical"]
+        },
+        "value": 4
+      },
+      {
+        "id": "station_major",
+        "condition": {
+          "all": [
+            {"path": "features.usage_class", "op": "eq", "value": "station"},
+            {"path": "features.station_ridership", "op": "gte", "value": 50000}
+          ]
+        },
+        "value": 4
+      },
+      {
+        "id": "station_other",
+        "condition": {"path": "features.usage_class", "op": "eq", "value": "station"},
+        "value": 3
+      },
+      {
+        "id": "commercial_large",
+        "condition": {"path": "features.usage_class", "op": "eq", "value": "commercial_large"},
+        "value": 3
+      },
+      {
+        "id": "welfare",
+        "condition": {"path": "features.usage_class", "op": "eq", "value": "welfare"},
+        "value": 3
+      },
+      {
+        "id": "logistics_large",
+        "condition": {
+          "all": [
+            {"path": "features.usage_class", "op": "eq", "value": "logistics"},
+            {"path": "features.total_floor_area_m2", "op": "gte", "value": 10000}
+          ]
+        },
+        "value": 3
+      },
+      {
+        "id": "office_large",
+        "condition": {
+          "all": [
+            {"path": "features.usage_class", "op": "eq", "value": "office"},
+            {"path": "features.total_floor_area_m2", "op": "gte", "value": 10000}
+          ]
+        },
+        "value": 2
+      },
+      {
+        "id": "mid_impact",
+        "condition": {
+          "path": "features.usage_class",
+          "op": "in",
+          "value": ["commercial", "school", "residential_large", "logistics"]
+        },
+        "value": 2
+      },
+      {
+        "id": "low_impact",
+        "condition": {"path": "features.usage_class", "op": "in", "value": ["office", "other"]},
+        "value": 1
+      }
+    ],
+    "additions": [
+      {
+        "id": "no_alt_facility_nearby",
+        "label": "alt_facility_dist_m >= 1000",
+        "delta": 1,
+        "condition": {"path": "features.alt_facility_dist_m", "op": "gte", "value": 1000}
+      },
+      {
+        "id": "q12_history",
+        "label": "Tier1 Q12 = はい",
+        "delta": 1,
+        "condition": {"path": "answers.q12", "op": "eq", "value": "yes"}
+      },
+      {
+        "id": "q10_single_system",
+        "label": "Tier1 Q10 = はい",
+        "delta": 1,
+        "condition": {"path": "answers.q10", "op": "eq", "value": "yes"}
+      }
+    ]
+  },
+
+  "c": {
+    "min": 0,
+    "max": 100,
+    "total_weight": 100,
+    "weights": [
+      {
+        "id": "inland_data",
+        "weight": 20,
+        "condition": {"path": "features.inland_depth_min_m", "op": "not_null"}
+      },
+      {
+        "id": "river_data",
+        "weight": 10,
+        "condition": {"path": "features.river_depth_min_m", "op": "not_null"}
+      },
+      {
+        "id": "dem_rel_elev",
+        "weight": 10,
+        "condition": {"path": "features.rel_elev_m", "op": "not_null"}
+      },
+      {
+        "id": "storeys_below",
+        "weight": 20,
+        "condition": {"path": "features.storeys_below", "op": "not_null"}
+      },
+      {
+        "id": "floor_area_or_storeys",
+        "weight": 10,
+        "condition": {
+          "any": [
+            {"path": "features.total_floor_area_m2", "op": "not_null"},
+            {"path": "features.storeys_above", "op": "not_null"}
+          ]
+        }
+      },
+      {
+        "id": "usage_class_known",
+        "weight": 10,
+        "condition": {
+          "all": [
+            {"path": "features.usage_class", "op": "not_null"},
+            {"path": "features.usage_class", "op": "ne", "value": "other"}
+          ]
+        }
+      },
+      {
+        "id": "tier1_answered",
+        "weight": 20,
+        "condition": {"op": "tier1_answered_count_gte", "value": 7}
+      }
+    ],
+    "deductions": [
+      {
+        "id": "inland_class_too_wide",
+        "penalty": 10,
+        "label": "内水ソースの階級幅が2.5m以上",
+        "condition": {"op": "inland_class_width_gte", "value": 2.5}
+      },
+      {
+        "id": "hazard_data_stale",
+        "penalty": 10,
+        "label": "ハザードデータの公表年が10年超",
+        "condition": {"op": "hazard_age_gt_years", "value": 10}
+      }
+    ]
+  },
+
+  "p_matrix": {
+    "comment": "行 = H (0-4), 列 = V (0-4)",
+    "rows": [
+      [0, 0, 0, 0, 0],
+      [0, 1, 2, 3, 3],
+      [1, 2, 3, 4, 4],
+      [2, 3, 3, 4, 4],
+      [2, 3, 4, 4, 4]
+    ]
+  },
+
+  "priority_matrix": {
+    "comment": "行 = P (0-4), 列 = I (0-4)",
+    "rows": [
+      ["D", "D", "D", "C", "C"],
+      ["D", "D", "C", "C", "B"],
+      ["D", "C", "C", "B", "B"],
+      ["C", "C", "B", "A", "A"],
+      ["C", "B", "A", "A", "A"]
+    ]
+  },
+
+  "priority_low_confidence_raise": {
+    "confidence_threshold": 50,
+    "min_p": 2,
+    "order": ["D", "C", "B", "A"],
+    "suffix": "*"
+  },
+
+  "missing_info_rules": [
+    {
+      "id": "storeys_below_unknown",
+      "condition": {"path": "features.storeys_below", "op": "is_null"},
+      "missing_info": ["地下階の有無"],
+      "priority_checks": ["地下階の有無・用途"]
+    },
+    {
+      "id": "v_high_no_tier1",
+      "condition": {
+        "all": [
+          {"path": "scores.V", "op": "gte", "value": 2},
+          {"path": "meta.tier1_present", "op": "is_false"}
+        ]
+      },
+      "missing_info": ["受変電設備の設置階", "非常用発電の設置階", "中央監視の位置"],
+      "priority_checks": ["受変電設備の設置階"]
+    },
+    {
+      "id": "underground_entrance_waterproofing",
+      "condition": {
+        "any": [
+          {"path": "answers.q02", "op": "eq", "value": "yes"},
+          {"path": "scores.V", "op": "gte", "value": 2}
+        ]
+      },
+      "missing_info": ["地下出入口の止水設備・止水高さ"],
+      "priority_checks": ["地下出入口の止水高さ"]
+    },
+    {
+      "id": "pump_backup_power_unknown",
+      "condition": {"path": "answers.q06", "op": "eq", "value": "unknown"},
+      "missing_info": ["排水ポンプの非常電源"],
+      "priority_checks": ["排水ポンプの非常電源"]
+    },
+    {
+      "id": "single_system_unknown_high_impact",
+      "condition": {
+        "all": [
+          {"path": "answers.q10", "op": "eq", "value": "unknown"},
+          {"path": "scores.I", "op": "gte", "value": 3}
+        ]
+      },
+      "missing_info": ["系統構成（単一系統か）"],
+      "priority_checks": ["全館停止波及の有無"]
+    }
+  ]
+}

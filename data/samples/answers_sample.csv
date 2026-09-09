@@ -1,0 +1,5 @@
+building_id,q01,q02,q03,q04,q05,q06,q07,q08,q09,q10,q11,q12
+bldg_sample_008,yes,yes,yes,unknown,unknown,no,unknown,unknown,unknown,no,yes,no
+bldg_sample_011,yes,no,no,yes,no,yes,yes,yes,yes,no,yes,no
+bldg_sample_002,no,no,no,no,unknown,unknown,no,unknown,unknown,no,no,no
+bldg_sample_017,yes,unknown,no,unknown,unknown,unknown,unknown,unknown,unknown,unknown,unknown,yes

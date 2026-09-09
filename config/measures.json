@@ -1,0 +1,121 @@
+{
+  "$comment": "docs/03_スコアリング仕様.md 第13章準拠。対策候補の提示条件（対策条件）は全てここに置き、floodbcp/measures.py は条件式を汎用評価するだけでロジックを持たない。",
+  "score_version": "0.1.0",
+  "measures": [
+    {
+      "id": "M-01",
+      "title": "地下・低層の重要設備の設置階確認（図面確認・現地調査）",
+      "condition": {
+        "all": [
+          {"path": "scores.V", "op": "gte", "value": 2},
+          {"path": "meta.tier1_present", "op": "is_false"}
+        ]
+      }
+    },
+    {
+      "id": "M-02",
+      "title": "受変電設備・非常用発電・中央監視の上階移設または架台かさ上げ・防水区画化",
+      "condition": {
+        "any": [
+          {"path": "answers.q03", "op": "eq", "value": "yes"},
+          {"path": "answers.q05", "op": "eq", "value": "yes"}
+        ]
+      }
+    },
+    {
+      "id": "M-03",
+      "title": "地下出入口・スロープ・ドライエリア・換気口への止水板・防水扉（JIS A 4716）設置",
+      "condition": {
+        "any": [
+          {"path": "answers.q02", "op": "eq", "value": "yes"},
+          {
+            "all": [
+              {"path": "scores.V", "op": "gte", "value": 2},
+              {"path": "scores.H", "op": "gte", "value": 1}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "M-04",
+      "title": "止水設備の設置手順・担当・判断基準の整備、豪雨前訓練",
+      "condition": {
+        "all": [
+          {"path": "answers.q07", "op": "eq", "value": "yes"},
+          {"path": "answers.q08", "op": "in", "value": ["no", "unknown"]}
+        ]
+      }
+    },
+    {
+      "id": "M-05",
+      "title": "排水ポンプの非常電源接続・逆流防止",
+      "condition": {
+        "all": [
+          {"path": "answers.q06", "op": "in", "value": ["no", "unknown"]},
+          {"path": "scores.V", "op": "gte", "value": 2}
+        ]
+      }
+    },
+    {
+      "id": "M-06",
+      "title": "仮設電源接続口の整備、系統分離・冗長化",
+      "condition": {
+        "any": [
+          {"path": "answers.q10", "op": "eq", "value": "yes"},
+          {"path": "answers.q11", "op": "eq", "value": "no"}
+        ]
+      }
+    },
+    {
+      "id": "M-07",
+      "title": "浸水検知センサー・雨量水位監視と通知閾値の設定",
+      "condition": {"path": "scores.P", "op": "gte", "value": 2}
+    },
+    {
+      "id": "M-08",
+      "title": "可搬式止水（プラバリア等）による流入方向制御の検討",
+      "condition": {
+        "all": [
+          {"path": "scores.H", "op": "gte", "value": 1},
+          {
+            "any": [
+              {"path": "features.depression_flag", "op": "is_true"},
+              {"path": "features.rel_elev_m", "op": "lte", "value": -0.3}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "M-09",
+      "title": "敷地内雨水貯留・雨庭・バイオスウェル・透水性舗装の導入可能性調査",
+      "condition": {
+        "all": [
+          {"path": "scores.H", "op": "gte", "value": 1},
+          {"path": "features.footprint_area_m2", "op": "gte", "value": 1000}
+        ]
+      }
+    },
+    {
+      "id": "M-10",
+      "title": "BCP見直し（代替拠点、復旧時間目標、交換部品の調達計画）",
+      "condition": {
+        "all": [
+          {"path": "scores.I", "op": "gte", "value": 3},
+          {"path": "scores.P", "op": "gte", "value": 2}
+        ]
+      }
+    },
+    {
+      "id": "M-11",
+      "title": "ケーブル・配管貫通部の止水確認",
+      "condition": {
+        "any": [
+          {"path": "answers.q03", "op": "eq", "value": "yes"},
+          {"path": "scores.V", "op": "gte", "value": 3}
+        ]
+      }
+    }
+  ]
+}
