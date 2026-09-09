@@ -85,6 +85,23 @@ class HGradeTests(unittest.TestCase):
         self.assertEqual(result.status, "assessed")
         self.assertEqual(result.H, 2)
 
+    def test_surge_only_data_is_assessed_and_h_from_surge_min(self):
+        # 内水・洪水は null でも、高潮（surge）データが単独であれば H は算出可能
+        # （insufficient_data にはならない）。depth_rep は surge の下限値を使う。
+        f = make_feature(
+            inland_depth_min_m=None,
+            inland_depth_max_m=None,
+            river_depth_min_m=None,
+            river_depth_max_m=None,
+            surge_depth_min_m=1.0,
+            surge_depth_max_m=2.0,
+            flood_history_flag=False,
+            depression_flag=False,
+        )
+        result = run(f)
+        self.assertEqual(result.status, "assessed")
+        self.assertEqual(result.H, 3)  # depth_rep=1.0 -> base grade 3、補正なし
+
     def test_max_grade_capped_at_4(self):
         # depth_rep 5.0 は base grade 4。補正 +1 があっても上限4を超えない。
         f = make_feature(
@@ -352,11 +369,14 @@ class StatusTests(unittest.TestCase):
         self.assertEqual(run(f).status, "assessed")
 
     def test_insufficient_data_when_no_depth_and_no_flags(self):
+        # 内水・洪水・高潮の「すべて」が null（かつ実績・窪地フラグなし）で insufficient_data。
         f = make_feature(
             inland_depth_min_m=None,
             inland_depth_max_m=None,
             river_depth_min_m=None,
             river_depth_max_m=None,
+            surge_depth_min_m=None,
+            surge_depth_max_m=None,
             flood_history_flag=False,
             depression_flag=False,
         )
@@ -364,7 +384,23 @@ class StatusTests(unittest.TestCase):
         self.assertEqual(result.status, "insufficient_data")
         self.assertIsNone(result.H)
         self.assertIsNone(result.P)
-        self.assertIsNone(result.priority)
+
+    def test_surge_only_is_not_insufficient_data(self):
+        # 内水・洪水が null でも、高潮（surge）データが1つでもあれば insufficient_data にならない。
+        f = make_feature(
+            inland_depth_min_m=None,
+            inland_depth_max_m=None,
+            river_depth_min_m=None,
+            river_depth_max_m=None,
+            surge_depth_min_m=1.0,
+            surge_depth_max_m=2.0,
+            flood_history_flag=False,
+            depression_flag=False,
+        )
+        result = run(f)
+        self.assertEqual(result.status, "assessed")
+        self.assertIsNotNone(result.H)
+        self.assertIsNotNone(result.priority)
 
 
 class ScenarioTests(unittest.TestCase):

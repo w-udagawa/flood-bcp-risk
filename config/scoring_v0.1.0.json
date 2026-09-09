@@ -14,7 +14,7 @@
       ["river_depth_min_m", "river_depth_max_m", "river_depth"],
       ["surge_depth_min_m", "surge_depth_max_m", "surge_depth"]
     ],
-    "insufficient_data_fields": ["inland_depth_min_m", "river_depth_min_m"],
+    "insufficient_data_fields": ["inland_depth_min_m", "river_depth_min_m", "surge_depth_min_m"],
     "provisional_grade_when_insufficient_but_evidence": 2,
     "base_grade_table": [
       {"min": 0, "min_inclusive": true, "max": 0, "max_inclusive": true, "grade": 0},

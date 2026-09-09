@@ -15,9 +15,11 @@ floodbcp（スコアリングエンジン）のテスト・デモ用に作成し
 - 用途：hospital, station（乗降客数多/少）, datacenter, public_critical,
   commercial_large, commercial, office, welfare, logistics（延床大/小）,
   school, residential_large, residential（対象外）, other（延床 3,000 未満/以上）
-- 欠損パターン：内水・洪水とも null（`insufficient_data` になるもの、
+- 欠損パターン：内水・洪水・高潮のすべてが null（`insufficient_data` になるもの、
   浸水実績があり H=2 暫定で継続するもの）、storeys_below 不明（用途から推定）、
-  surge のみデータありなど
+  内水・洪水は null で高潮（surge）のみデータあり（`bldg_sample_020`。内水・洪水・
+  高潮のいずれか1つでもデータがあれば H は算出できるため `assessed` となり、
+  H は surge の下限値から算出される）
 - シナリオ：
   - `bldg_sample_001`：自由が丘型（commercial_large、storeys_below=1、
     内水 0.5–1.0 m、延床 ≥10,000、浸水実績あり）→ 優先度 A を想定

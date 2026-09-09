@@ -79,7 +79,14 @@ def _normalize_answers(answers: dict[str, str] | None) -> dict[str, str]:
     return {q: answers.get(q, "unknown") for q in QUESTION_IDS}
 
 
-def _determine_status(feature: Feature, status_cfg: dict[str, Any]) -> str:
+def _has_no_depth_data(feature: Feature, h_cfg: dict[str, Any]) -> bool:
+    """h_cfg["insufficient_data_fields"]（内水・洪水・高潮の代表下限フィールド）が
+    すべて null かどうか。H の算出可否・status の insufficient_data 判定の両方で使う。
+    """
+    return all(getattr(feature, field_name) is None for field_name in h_cfg["insufficient_data_fields"])
+
+
+def _determine_status(feature: Feature, status_cfg: dict[str, Any], h_cfg: dict[str, Any]) -> str:
     usage_class = feature.usage_class
     if usage_class is not None and usage_class in status_cfg["out_of_scope_usage_classes"]:
         return "out_of_scope"
@@ -89,8 +96,7 @@ def _determine_status(feature: Feature, status_cfg: dict[str, Any]) -> str:
         if floor is None or floor < threshold:
             return "out_of_scope"
     if (
-        feature.inland_depth_min_m is None
-        and feature.river_depth_min_m is None
+        _has_no_depth_data(feature, h_cfg)
         and feature.flood_history_flag is not True
         and feature.depression_flag is not True
     ):
@@ -122,9 +128,9 @@ def _compute_h(
     evidence: list[dict[str, Any]] = []
     src = feature.data_versions
 
-    if feature.inland_depth_min_m is None and feature.river_depth_min_m is None:
-        # 内水・洪水とも null。ここに到達するのは status != insufficient_data の場合のみ、
-        # すなわち flood_history_flag か depression_flag のいずれかが true のとき。
+    if _has_no_depth_data(feature, h_cfg):
+        # 内水・洪水・高潮のすべてが null。ここに到達するのは status != insufficient_data の
+        # 場合のみ、すなわち flood_history_flag か depression_flag のいずれかが true のとき。
         grade = h_cfg["provisional_grade_when_insufficient_but_evidence"]
         reasons = []
         if feature.flood_history_flag is True:
@@ -135,7 +141,7 @@ def _compute_h(
             {
                 "axis": "H",
                 "rule": "provisional_no_depth_data",
-                "value": f"H={grade}（暫定: 内水・洪水データなし。根拠: {'/'.join(reasons)}）",
+                "value": f"H={grade}（暫定: 内水・洪水・高潮データなし。根拠: {'/'.join(reasons)}）",
                 "source": src,
                 "fetched_at": None,
             }
@@ -405,7 +411,7 @@ def assess(
     norm_answers = _normalize_answers(answers)
     meta = {"tier1_present": tier1_present, "as_of_year": as_of_year}
 
-    status = _determine_status(feature, config["status"])
+    status = _determine_status(feature, config["status"], config["h"])
 
     if status == "out_of_scope":
         return Assessment(
@@ -437,7 +443,7 @@ def assess(
             {
                 "axis": "H",
                 "rule": "insufficient_data",
-                "value": "内水・洪水データがなく、浸水実績・窪地フラグもないためH算出不能",
+                "value": "内水・洪水・高潮データがなく、浸水実績・窪地フラグもないためH算出不能",
                 "source": feature.data_versions,
                 "fetched_at": None,
             }
@@ -467,7 +473,7 @@ def assess(
     full_ctx = Context(features=feature.as_dict(), answers=norm_answers, scores=scores, meta=meta)
     missing_info, priority_checks = _compute_missing_info(full_ctx, config["missing_info_rules"])
     if status == "insufficient_data":
-        for item in ("内水浸水データ", "洪水浸水データ"):
+        for item in ("内水浸水データ", "洪水浸水データ", "高潮浸水データ"):
             if item not in missing_info:
                 missing_info.insert(0, item)
 
