@@ -22,6 +22,7 @@
     --color-priority-c: #f4c542;
     --color-priority-d: #9aa0a6;
     --color-priority-unknown: #dfe3e8;
+    --color-priority-unassessed: #5c6b7a;
     --radius: 6px;
   }
 
@@ -187,6 +188,10 @@
   .legend .row { display: flex; align-items: center; gap: 6px; margin: 2px 0; }
   .legend .chip { width: 12px; height: 12px; border-radius: 2px; flex: none; }
   .legend .chip.emphasis { box-shadow: 0 0 0 2px #1f2530 inset; }
+  /* 評価不能（データ不足）：D の灰色と区別できるよう、地色の上に斜線ハッチを重ねる */
+  .legend .chip.hatch {
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.85) 0 2px, transparent 2px 5px);
+  }
 
   .map-attribution-note {
     position: absolute;
@@ -237,6 +242,25 @@
     background: #eef0f3;
     color: var(--color-text-muted);
     font-size: 11px;
+  }
+  .unassessed-notice {
+    background: #fff4e5;
+    border: 1px solid #e0a942;
+    color: #6b4d00;
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  section.missing-info-highlight {
+    background: #fff4e5;
+    border: 1px solid #e0a942;
+    border-radius: var(--radius);
+    padding: 8px 10px;
+  }
+  section.missing-info-highlight h3 {
+    border-bottom-color: #e0a942;
   }
   .grade-grid {
     display: grid;
@@ -333,6 +357,7 @@
           <option value="B">B（簡易診断推奨）</option>
           <option value="C">C（定期確認）</option>
           <option value="D">D（現状対応不要）</option>
+          <option value="unassessed">評価不能（データ不足）</option>
         </select>
       </div>
       <div class="field">

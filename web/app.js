@@ -185,7 +185,7 @@
 
   function colorForLayer(layer, assessment) {
     if (!assessment) return layer === 'priority' ? J.PRIORITY_UNKNOWN_COLOR : J.GRADE_UNKNOWN_COLOR;
-    if (layer === 'priority') return J.priorityColor(assessment.priority);
+    if (layer === 'priority') return J.priorityColorForAssessment(assessment);
     return J.gradeColor(layer, assessment[layer]);
   }
 
@@ -316,6 +316,10 @@
           '</div>';
       });
       html += '<div class="row"><span class="chip emphasis" style="background:#fff"></span>枠線強調＝確信度不足による繰り上げ（*）</div>';
+      html +=
+        '<div class="row"><span class="chip hatch" style="background:' +
+        J.PRIORITY_UNASSESSED_COLOR +
+        '"></span>評価不能（データ不足。「情報がない＝安全」ではありません）</div>';
       html += '<div class="row"><span class="chip" style="background:' + J.PRIORITY_UNKNOWN_COLOR + '"></span>評価対象外・未評価</div>';
     } else {
       var labels = { H: 'ハザード等級 H', V: '流入脆弱性等級 V', I: '事業影響度等級 I', C: 'データ確信度 C' };
@@ -357,13 +361,13 @@
       var left = document.createElement('span');
       var swatch = document.createElement('span');
       swatch.className = 'swatch';
-      swatch.style.background = a ? J.priorityColor(a.priority) : J.PRIORITY_UNKNOWN_COLOR;
+      swatch.style.background = a ? J.priorityColorForAssessment(a) : J.PRIORITY_UNKNOWN_COLOR;
       left.appendChild(swatch);
       left.appendChild(document.createTextNode(props.name || props.building_id));
 
       var right = document.createElement('span');
       right.style.color = '#5b6472';
-      right.textContent = a && a.priority ? a.priority : J.statusLabel(a ? a.status : null);
+      right.textContent = J.priorityLabelForAssessment(a);
 
       li.appendChild(left);
       li.appendChild(right);
@@ -416,8 +420,14 @@
     var a = props.assessment;
     var panel = byId('side-panel');
 
+    var isUnassessed = J.isUnassessed(a);
     var priorityHtml = '';
-    if (a && a.priority) {
+    if (isUnassessed) {
+      priorityHtml =
+        '<span class="priority-badge" style="background:' +
+        J.PRIORITY_UNASSESSED_COLOR +
+        '">評価不能</span>';
+    } else if (a && a.priority) {
       priorityHtml =
         '<span class="priority-badge" style="background:' +
         J.priorityColor(a.priority) +
@@ -431,6 +441,12 @@
       priorityHtml = '<span class="priority-badge" style="background:' + J.PRIORITY_UNKNOWN_COLOR + ';color:#333;">—</span>';
     }
     var statusHtml = '<span class="status-badge">' + escapeHtml(J.statusLabel(a ? a.status : null)) + '</span>';
+    var unassessedNoticeHtml = isUnassessed
+      ? '<div class="unassessed-notice"><strong>評価不能（データ不足）：</strong>' +
+        'ハザードデータ（内水・洪水・高潮の浸水深、浸水実績、窪地情報）が' +
+        'すべて未整備のため、H（ハザード等級）・P（設備被災可能性）・対応優先度を算出できていません。' +
+        '「情報がない＝安全」を意味するものではないため、下記の不足情報を優先的に確認してください。</div>'
+      : '';
 
     var gradesHtml =
       '<div class="grade-grid">' +
@@ -494,11 +510,14 @@
       priorityHtml +
       statusHtml +
       '</div>' +
+      unassessedNoticeHtml +
       gradesHtml +
       '<section><h3>評価根拠</h3>' +
       evidenceHtml +
       '</section>' +
-      '<section><h3>不足情報</h3>' +
+      '<section' +
+      (isUnassessed ? ' class="missing-info-highlight"' : '') +
+      '><h3>不足情報</h3>' +
       missingHtml +
       '</section>' +
       '<section><h3>優先確認事項</h3>' +

@@ -36,6 +36,12 @@
   };
   // 評価対象外・未評価（priority が null など）
   var PRIORITY_UNKNOWN_COLOR = '#dfe3e8';
+  // 評価不能（status = insufficient_data、H が算出不能で priority も null）。
+  // 「情報がない＝安全」ではないことを示すため、D（#9aa0a6、暖色系グレー）とは
+  // 区別できる寒色系のグレー（灰色ハッチ相当）にする（TASK-008）。
+  var PRIORITY_UNASSESSED_COLOR = '#5c6b7a';
+  // priority が null かつ status = insufficient_data の建物に表示するラベル。
+  var UNASSESSED_LABEL = '評価不能（データ不足）';
 
   // H/V/I（0〜4）用の順序尺度カラーランプ（薄→濃、5段階）
   var GRADE_RAMP_0_4 = ['#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000'];
@@ -119,6 +125,38 @@
     return STATUS_LABELS[status] || status || '不明';
   }
 
+  /**
+   * assessment が「評価不能」（status = insufficient_data かつ priority が null）かどうか。
+   * docs/03_スコアリング仕様.md 第10章：insufficient_data は H・P・priority が
+   * 算出不能（null）になる（V・I・C・不足情報・対策候補は算出される）。
+   */
+  function isUnassessed(assessment) {
+    return !!assessment && assessment.status === 'insufficient_data' && priorityBase(assessment.priority) === null;
+  }
+
+  /**
+   * 建物一覧・地図の塗り分けに使う優先度の色を assessment 全体から決める。
+   * insufficient_data（評価不能）は D とは別の色（PRIORITY_UNASSESSED_COLOR）にし、
+   * 「情報がない＝安全（D）」と誤認されないようにする（TASK-008）。
+   * priorityColor() 自体の契約（引数）は変更しない。
+   */
+  function priorityColorForAssessment(assessment) {
+    if (isUnassessed(assessment)) return PRIORITY_UNASSESSED_COLOR;
+    return priorityColor(assessment ? assessment.priority : null);
+  }
+
+  /**
+   * 建物一覧・カルテの優先度欄に出す文字列を assessment 全体から決める。
+   * - 評価不能（insufficient_data かつ priority null）：「評価不能（データ不足）」
+   * - priority あり：そのまま（"B*" 等、確信度繰り上げの "*" を含む）
+   * - それ以外（out_of_scope 等、priority なし）：statusLabel(status)（従来どおり）
+   */
+  function priorityLabelForAssessment(assessment) {
+    if (isUnassessed(assessment)) return UNASSESSED_LABEL;
+    if (assessment && assessment.priority) return String(assessment.priority);
+    return statusLabel(assessment ? assessment.status : null);
+  }
+
   /** usage_class コードから日本語ラベルを返す。未知の値はそのまま返す。 */
   function usageClassLabel(usageClass) {
     if (usageClass === null || usageClass === undefined) return '不明';
@@ -187,7 +225,8 @@
    * @param {Array<object>} features - joinBuildingsWithAssessments() の features
    * @param {object} filters
    * @param {string} [filters.usageClass] - 'all' または usage_class 値
-   * @param {string} [filters.priority] - 'all' または 'A'|'B'|'C'|'D'（"*" の有無は問わない）
+   * @param {string} [filters.priority] - 'all'、'A'|'B'|'C'|'D'（"*" の有無は問わない）、
+   *   または 'unassessed'（status = insufficient_data の評価不能建物のみ）
    * @param {boolean} [filters.needsReviewOnly] - true の場合、確信度不足で優先度が繰り上げられた
    *   （priority_raised_by_low_confidence === true、表記上 "*" が付く）建物のみを残す。
    *   docs/03_スコアリング仕様.md 第9章「確信度ルール」に基づく。
@@ -205,8 +244,12 @@
       if (usageClass && props.usage_class !== usageClass) return false;
 
       if (priority) {
-        var base = assessment ? priorityBase(assessment.priority) : null;
-        if (base !== priority) return false;
+        if (priority === 'unassessed') {
+          if (!isUnassessed(assessment)) return false;
+        } else {
+          var base = assessment ? priorityBase(assessment.priority) : null;
+          if (base !== priority) return false;
+        }
       }
 
       if (needsReviewOnly) {
@@ -236,10 +279,15 @@
   return {
     PRIORITY_COLORS: PRIORITY_COLORS,
     PRIORITY_UNKNOWN_COLOR: PRIORITY_UNKNOWN_COLOR,
+    PRIORITY_UNASSESSED_COLOR: PRIORITY_UNASSESSED_COLOR,
+    UNASSESSED_LABEL: UNASSESSED_LABEL,
     GRADE_UNKNOWN_COLOR: GRADE_UNKNOWN_COLOR,
     priorityBase: priorityBase,
     isLowConfidenceFlagged: isLowConfidenceFlagged,
+    isUnassessed: isUnassessed,
     priorityColor: priorityColor,
+    priorityColorForAssessment: priorityColorForAssessment,
+    priorityLabelForAssessment: priorityLabelForAssessment,
     gradeColor: gradeColor,
     statusLabel: statusLabel,
     usageClassLabel: usageClassLabel,

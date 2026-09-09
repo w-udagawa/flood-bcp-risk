@@ -10,7 +10,10 @@ const path = require('node:path');
 const {
   priorityBase,
   isLowConfidenceFlagged,
+  isUnassessed,
   priorityColor,
+  priorityColorForAssessment,
+  priorityLabelForAssessment,
   gradeColor,
   statusLabel,
   usageClassLabel,
@@ -19,6 +22,8 @@ const {
   searchFeatures,
   PRIORITY_COLORS,
   PRIORITY_UNKNOWN_COLOR,
+  PRIORITY_UNASSESSED_COLOR,
+  UNASSESSED_LABEL,
   GRADE_UNKNOWN_COLOR,
 } = require('../lib/join.js');
 
@@ -123,6 +128,47 @@ test('gradeColor buckets C (confidence 0-100) into 5 bands at the documented bou
   assert.equal(gradeColor('C', 80), gradeColor('C', 100));
 });
 
+// --- isUnassessed / priorityColorForAssessment / priorityLabelForAssessment ----
+// TASK-008: status = insufficient_data（priority null）は除外せず「評価不能」として
+// 明示表示する。D（現状対応不要）の灰色とは区別できる色・別ラベルにする。
+
+test('isUnassessed is true only for status=insufficient_data with a null priority', () => {
+  assert.equal(isUnassessed(makeAssessment('b', { status: 'insufficient_data', priority: null, H: null, P: null })), true);
+  assert.equal(isUnassessed(makeAssessment('b', { status: 'assessed', priority: 'C' })), false);
+  assert.equal(isUnassessed(makeAssessment('b', { status: 'out_of_scope', priority: null })), false);
+  assert.equal(isUnassessed(null), false);
+  assert.equal(isUnassessed(undefined), false);
+});
+
+test('priorityColorForAssessment uses PRIORITY_UNASSESSED_COLOR for insufficient_data, distinct from D and from unknown', () => {
+  const unassessed = makeAssessment('b', { status: 'insufficient_data', priority: null, H: null, P: null });
+  assert.equal(priorityColorForAssessment(unassessed), PRIORITY_UNASSESSED_COLOR);
+  assert.notEqual(PRIORITY_UNASSESSED_COLOR, PRIORITY_COLORS.D);
+  assert.notEqual(PRIORITY_UNASSESSED_COLOR, PRIORITY_UNKNOWN_COLOR);
+});
+
+test('priorityColorForAssessment falls back to priorityColor()-equivalent behavior for other statuses', () => {
+  const assessed = makeAssessment('b', { status: 'assessed', priority: 'A' });
+  assert.equal(priorityColorForAssessment(assessed), priorityColor('A'));
+  const outOfScope = makeAssessment('b', { status: 'out_of_scope', priority: null });
+  assert.equal(priorityColorForAssessment(outOfScope), PRIORITY_UNKNOWN_COLOR);
+  assert.equal(priorityColorForAssessment(null), priorityColor(null));
+});
+
+test('priorityLabelForAssessment returns the 評価不能 label for insufficient_data, and leaves out_of_scope unchanged', () => {
+  const unassessed = makeAssessment('b', { status: 'insufficient_data', priority: null, H: null, P: null });
+  assert.equal(priorityLabelForAssessment(unassessed), UNASSESSED_LABEL);
+  assert.equal(priorityLabelForAssessment(unassessed), '評価不能（データ不足）');
+
+  const outOfScope = makeAssessment('b', { status: 'out_of_scope', priority: null });
+  assert.equal(priorityLabelForAssessment(outOfScope), statusLabel('out_of_scope'));
+
+  const assessed = makeAssessment('b', { status: 'assessed', priority: 'B*' });
+  assert.equal(priorityLabelForAssessment(assessed), 'B*');
+
+  assert.equal(priorityLabelForAssessment(null), statusLabel(null));
+});
+
 // --- statusLabel / usageClassLabel -----------------------------------------
 
 test('statusLabel maps the three defined statuses to Japanese labels', () => {
@@ -209,6 +255,32 @@ function sampleJoined() {
   return joinBuildingsWithAssessments(buildings, assessments).features;
 }
 
+/** sampleJoined() に status=insufficient_data（評価不能）の建物を1件加えたもの。 */
+function sampleJoinedWithUnassessed() {
+  const buildings = {
+    type: 'FeatureCollection',
+    features: [
+      makeBuilding('b1', { name: 'One', usage_class: 'hospital' }),
+      makeBuilding('b2', { name: 'Two', usage_class: 'office' }),
+      makeBuilding('b3', { name: 'Three', usage_class: 'office' }),
+      makeBuilding('b4', { name: 'Four', usage_class: 'office' }),
+    ],
+  };
+  const assessments = [
+    makeAssessment('b1', { priority: 'A', priority_raised_by_low_confidence: false }),
+    makeAssessment('b2', { priority: 'B*', priority_raised_by_low_confidence: true }),
+    makeAssessment('b3', { priority: 'B', priority_raised_by_low_confidence: false }),
+    makeAssessment('b4', {
+      status: 'insufficient_data',
+      priority: null,
+      H: null,
+      P: null,
+      priority_raised_by_low_confidence: false,
+    }),
+  ];
+  return joinBuildingsWithAssessments(buildings, assessments).features;
+}
+
 test('filterFeatures filters by usageClass', () => {
   const result = filterFeatures(sampleJoined(), { usageClass: 'office' });
   assert.equal(result.length, 2);
@@ -218,6 +290,13 @@ test('filterFeatures filters by usageClass', () => {
 test('filterFeatures filters by priority base grade, ignoring the "*" marker', () => {
   const result = filterFeatures(sampleJoined(), { priority: 'B' });
   assert.equal(result.length, 2); // b2 ("B*") and b3 ("B")
+});
+
+test('filterFeatures priority="unassessed" keeps only insufficient_data buildings (TASK-008)', () => {
+  const result = filterFeatures(sampleJoinedWithUnassessed(), { priority: 'unassessed' });
+  assert.equal(result.length, 1);
+  assert.equal(result[0].properties.building_id, 'b4');
+  assert.equal(result[0].properties.assessment.status, 'insufficient_data');
 });
 
 test('filterFeatures needsReviewOnly keeps only priority_raised_by_low_confidence === true', () => {
@@ -278,15 +357,24 @@ test('sample data: buildings_sample.geojson and assessments_sample.json join cle
     'every sample building should have a matching assessment'
   );
 
-  // priority が付与されている（out_of_scope を除く）建物は A/B/C/D のいずれかの色を持つ
+  // TASK-008: out_of_scope・insufficient_data（評価不能）は priority が null で許容される。
+  // それ以外（assessed）の建物は A/B/C/D のいずれかの色を持つ。
   result.features.forEach((f) => {
     const a = f.properties.assessment;
-    if (a.status === 'out_of_scope') {
+    if (a.status === 'out_of_scope' || a.status === 'insufficient_data') {
       assert.equal(a.priority, null);
       return;
     }
     assert.ok(['A', 'B', 'C', 'D'].includes(priorityBase(a.priority)), `unexpected priority ${a.priority}`);
     assert.notEqual(priorityColor(a.priority), PRIORITY_UNKNOWN_COLOR);
+  });
+
+  // insufficient_data（評価不能）が少なくとも1件含まれ、D とは別の色で塗られる（TASK-008）。
+  const unassessedFeatures = result.features.filter((f) => isUnassessed(f.properties.assessment));
+  assert.ok(unassessedFeatures.length > 0, 'sample data should include at least one insufficient_data (評価不能) building');
+  unassessedFeatures.forEach((f) => {
+    assert.equal(priorityColorForAssessment(f.properties.assessment), PRIORITY_UNASSESSED_COLOR);
+    assert.equal(priorityLabelForAssessment(f.properties.assessment), UNASSESSED_LABEL);
   });
 
   // サンプルには少なくとも1件、確信度不足による優先度繰り上げ（"*"）が含まれる

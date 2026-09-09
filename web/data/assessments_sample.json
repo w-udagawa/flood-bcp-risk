@@ -350,6 +350,92 @@
     ]
   },
   {
+    "building_id": "bldg_sample_006",
+    "tier": 0,
+    "score_version": "0.1.0",
+    "data_version": "sample_v0.1.0",
+    "computed_at": "2026-09-09T00:00:00Z",
+    "status": "insufficient_data",
+    "H": null,
+    "V": 3,
+    "I": 1,
+    "P": null,
+    "C": 40,
+    "priority": null,
+    "priority_raised_by_low_confidence": false,
+    "evidence": [
+      {
+        "axis": "H",
+        "rule": "insufficient_data",
+        "value": "内水・洪水・高潮データがなく、浸水実績・窪地フラグもないためH算出不能",
+        "source": "sample_v0.1.0",
+        "fetched_at": null
+      },
+      {
+        "axis": "V",
+        "rule": "storeys_below",
+        "value": 1,
+        "source": "sample_v0.1.0",
+        "fetched_at": null
+      },
+      {
+        "axis": "V",
+        "rule": "adjustment_electric_room_likely",
+        "value": "total_floor_area_m2 >= 3000 または storeys_above >= 6",
+        "source": "sample_v0.1.0",
+        "fetched_at": null
+      },
+      {
+        "axis": "I",
+        "rule": "usage_class_base",
+        "value": "usage_class=office -> base I=1",
+        "source": "sample_v0.1.0",
+        "fetched_at": null
+      },
+      {
+        "axis": "C",
+        "rule": "weight_storeys_below",
+        "value": 20,
+        "source": null,
+        "fetched_at": null
+      },
+      {
+        "axis": "C",
+        "rule": "weight_floor_area_or_storeys",
+        "value": 10,
+        "source": null,
+        "fetched_at": null
+      },
+      {
+        "axis": "C",
+        "rule": "weight_usage_class_known",
+        "value": 10,
+        "source": null,
+        "fetched_at": null
+      }
+    ],
+    "missing_info": [
+      "高潮浸水データ",
+      "洪水浸水データ",
+      "内水浸水データ",
+      "受変電設備の設置階",
+      "非常用発電の設置階",
+      "中央監視の位置",
+      "地下出入口の止水設備・止水高さ",
+      "排水ポンプの非常電源"
+    ],
+    "priority_checks": [
+      "受変電設備の設置階",
+      "地下出入口の止水高さ",
+      "排水ポンプの非常電源"
+    ],
+    "measures": [
+      "M-01",
+      "M-05",
+      "M-11"
+    ]
+  },
+  {
     "building_id": "bldg_sample_007",
     "tier": 0,
     "score_version": "0.1.0",

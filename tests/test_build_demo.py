@@ -11,6 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from floodbcp.features import load_features  # noqa: E402
 from scripts.build_demo import DEFAULT_ANSWERS_CSV, DEFAULT_FEATURES_CSV, build  # noqa: E402
 
 
@@ -91,17 +92,32 @@ class BuildDemoTests(unittest.TestCase):
                 self.assertEqual(ring[0], ring[-1])
                 self.assertEqual(len(ring), 5)
 
-    def test_no_insufficient_data_status_in_web_output(self):
-        """insufficient_data は priority が必ず null になり、web/tests/join.test.js の
-        前提（out_of_scope 以外は priority が A/B/C/D）と食い違うため除外される。"""
+    def test_insufficient_data_is_included_not_excluded(self):
+        """TASK-008：status=insufficient_data の建物も除外せず、features 全件を
+        web/data/ に出力する（ビューア側で「評価不能」として明示表示する方針に変更、
+        除外はしない）。building_id 集合は features・assessments・buildings で一致する。"""
         with tempfile.TemporaryDirectory() as tmp:
             out_dir = Path(tmp)
-            _run_build(out_dir)
+            summary = _run_build(out_dir)
+            features = load_features(DEFAULT_FEATURES_CSV)
             assessments = json.loads((out_dir / "assessments_sample.json").read_text(encoding="utf-8"))
+            buildings = json.loads((out_dir / "buildings_sample.geojson").read_text(encoding="utf-8"))
+
+            feature_ids = {f.building_id for f in features}
+            assessment_ids = {a["building_id"] for a in assessments}
+            building_ids = {f["properties"]["building_id"] for f in buildings["features"]}
+            self.assertEqual(feature_ids, assessment_ids)
+            self.assertEqual(feature_ids, building_ids)
+            self.assertEqual(summary["building_count"], summary["web_building_count"])
+
             statuses = {a["status"] for a in assessments}
-            self.assertNotIn("insufficient_data", statuses)
-            # ただし out_of_scope（priority が null でも許容される）は残る
+            self.assertIn("insufficient_data", statuses)
             self.assertIn("out_of_scope", statuses)
+
+            for a in assessments:
+                if a["status"] == "insufficient_data":
+                    self.assertIsNone(a["priority"], msg="insufficient_data の priority は null のはず")
+                    self.assertIsNone(a["H"], msg="insufficient_data の H は算出不能（null）のはず")
 
     def test_polygons_are_within_radius_of_center(self):
         import math
@@ -145,6 +161,29 @@ class BuildDemoTests(unittest.TestCase):
                 content1 = (Path(tmp1) / name).read_bytes()
                 content2 = (Path(tmp2) / name).read_bytes()
                 self.assertEqual(content1, content2, msg=f"{name} is not deterministic across two runs")
+
+    def test_no_real_place_names_in_sample_or_web_output(self):
+        """TASK-008：サンプル名称（data/samples/features_sample.csv、web/data/ 出力）に
+        実在の駅名・地名・区名を含まないこと。"""
+        forbidden = ["自由が丘", "目黒", "世田谷", "大田", "渋谷", "武蔵小杉", "等々力"]
+
+        csv_text = DEFAULT_FEATURES_CSV.read_text(encoding="utf-8")
+        for token in forbidden:
+            self.assertNotIn(token, csv_text, msg=f"{token!r} が features_sample.csv に含まれています")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out_dir = Path(tmp)
+            _run_build(out_dir)
+            buildings = json.loads((out_dir / "buildings_sample.geojson").read_text(encoding="utf-8"))
+            assessments_text = (out_dir / "assessments_sample.json").read_text(encoding="utf-8")
+
+            for feature in buildings["features"]:
+                name = feature["properties"]["name"]
+                for token in forbidden:
+                    self.assertNotIn(token, name, msg=f"{token!r} が building name に含まれています: {name!r}")
+
+            for token in forbidden:
+                self.assertNotIn(token, assessments_text, msg=f"{token!r} が assessments_sample.json に含まれています")
 
     def test_no_real_facility_names_marker(self):
         """サンプルは架空であることの簡易チェック（"架空:" 接頭辞または "サンプル" を含む）。"""

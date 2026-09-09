@@ -32,7 +32,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_001",
-        "name": "架空:目黒プラザ（サンプルデータ）",
+        "name": "架空:A地区プラザ（サンプルデータ）",
         "usage_class": "commercial_large",
         "ward_code": "13110",
         "storeys_below": 1,
@@ -70,7 +70,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_002",
-        "name": "架空:せたがや中央病院（サンプルデータ）",
+        "name": "架空:B地区中央病院（サンプルデータ）",
         "usage_class": "hospital",
         "ward_code": "13112",
         "storeys_below": 0,
@@ -198,6 +198,44 @@
         "coordinates": [
           [
             [
+              139.6685436,
+              35.6087322
+            ],
+            [
+              139.6686474,
+              35.6087322
+            ],
+            [
+              139.6686474,
+              35.6089474
+            ],
+            [
+              139.6685436,
+              35.6089474
+            ],
+            [
+              139.6685436,
+              35.6087322
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "bldg_sample_006",
+        "name": "架空:C地区オフィスB（サンプルデータ）",
+        "usage_class": "office",
+        "ward_code": "13113",
+        "storeys_below": 1,
+        "total_floor_area_m2": 6000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
               139.6730268,
               35.609936
             ],
@@ -222,7 +260,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_007",
-        "name": "架空:大田商店街C（サンプルデータ）",
+        "name": "架空:C地区商店街C（サンプルデータ）",
         "usage_class": "commercial",
         "ward_code": "13113",
         "storeys_below": 0,
@@ -260,7 +298,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_008",
-        "name": "架空:自由が丘駅ビル（サンプルデータ）",
+        "name": "架空:A駅ビル（サンプルデータ）",
         "usage_class": "station",
         "ward_code": "13110",
         "storeys_below": null,
@@ -298,7 +336,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_009",
-        "name": "架空:等々力駅舎（サンプルデータ）",
+        "name": "架空:B駅舎（サンプルデータ）",
         "usage_class": "station",
         "ward_code": "13112",
         "storeys_below": 0,
@@ -336,7 +374,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_010",
-        "name": "架空:大田データセンター（サンプルデータ）",
+        "name": "架空:C地区データセンター（サンプルデータ）",
         "usage_class": "datacenter",
         "ward_code": "13113",
         "storeys_below": 2,
@@ -374,7 +412,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_011",
-        "name": "架空:目黒区防災センター（サンプルデータ）",
+        "name": "架空:A地区防災センター（サンプルデータ）",
         "usage_class": "public_critical",
         "ward_code": "13110",
         "storeys_below": 1,
@@ -412,7 +450,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_012",
-        "name": "架空:せたがや特別養護老人ホーム（サンプルデータ）",
+        "name": "架空:B地区特別養護老人ホーム（サンプルデータ）",
         "usage_class": "welfare",
         "ward_code": "13112",
         "storeys_below": 0,
@@ -450,7 +488,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_013",
-        "name": "架空:大田物流センター大（サンプルデータ）",
+        "name": "架空:C地区物流センター大（サンプルデータ）",
         "usage_class": "logistics",
         "ward_code": "13113",
         "storeys_below": 0,
@@ -488,7 +526,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_014",
-        "name": "架空:大田物流センター小（サンプルデータ）",
+        "name": "架空:C地区物流センター小（サンプルデータ）",
         "usage_class": "logistics",
         "ward_code": "13113",
         "storeys_below": 0,
@@ -526,7 +564,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_015",
-        "name": "架空:目黒第三小学校（サンプルデータ）",
+        "name": "架空:A地区第三小学校（サンプルデータ）",
         "usage_class": "school",
         "ward_code": "13110",
         "storeys_below": 0,
@@ -564,7 +602,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_016",
-        "name": "架空:せたがやタワーレジデンス（サンプルデータ）",
+        "name": "架空:B地区タワーレジデンス（サンプルデータ）",
         "usage_class": "residential_large",
         "ward_code": "13112",
         "storeys_below": 1,
@@ -602,7 +640,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_017",
-        "name": "架空:大田オフィスD（サンプルデータ）",
+        "name": "架空:C地区オフィスD（サンプルデータ）",
         "usage_class": "office",
         "ward_code": "13113",
         "storeys_below": 1,
@@ -640,7 +678,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_018",
-        "name": "架空:自由が丘商店D（サンプルデータ）",
+        "name": "架空:A駅前商店D（サンプルデータ）",
         "usage_class": "commercial",
         "ward_code": "13110",
         "storeys_below": 0,
@@ -678,7 +716,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_019",
-        "name": "架空:目黒モール（地下階不明）（サンプルデータ）",
+        "name": "架空:A地区モール（地下階不明）（サンプルデータ）",
         "usage_class": "commercial_large",
         "ward_code": "13110",
         "storeys_below": null,
@@ -716,7 +754,7 @@
       },
       "properties": {
         "building_id": "bldg_sample_020",
-        "name": "架空:大田臨海倉庫（サンプルデータ）",
+        "name": "架空:C地区臨海倉庫（サンプルデータ）",
         "usage_class": "logistics",
         "ward_code": "13113",
         "storeys_below": 0,

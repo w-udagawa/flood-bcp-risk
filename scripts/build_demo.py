@@ -118,10 +118,11 @@ def _building_polygon(building_id: str, footprint_area_m2: float | None) -> dict
 
 
 def _building_display_name(feature: Feature) -> str:
-    # web/tests/join.test.js（編集不可）は、サンプル建物名に架空マーカー
-    # "サンプル" が含まれることを検証している。data/samples/ 側は
-    # "架空:" 接頭辞を使っているため、ここでビューア表示用の名称として
-    # 明示的に "（サンプルデータ）" を付す。
+    # web/tests/join.test.js は、サンプル建物名に架空マーカー "サンプル" が
+    # 含まれることを検証している。data/samples/ 側は "架空:" 接頭辞を
+    # 使っているため、ここでビューア表示用の名称として明示的に
+    # "（サンプルデータ）" を付す。名称に実在の駅名・地名・区名を含めない
+    # ことは data/samples/features_sample.csv 側で担保する（TASK-008）。
     base = feature.name or feature.building_id
     return f"{base}（サンプルデータ）"
 
@@ -249,18 +250,12 @@ def build(
         for f in features
     ]
 
-    # web/ ビューア（TASK-005、web/tests/join.test.js）は「status が out_of_scope で
-    # なければ priority は A/B/C/D のいずれか」という前提でテストされている
-    # （TASK-005 当時の手書きサンプルがそう作られていたため）。しかし
-    # docs/03_スコアリング仕様.md の実装上、status=insufficient_data は H が
-    # 算出できず P・priority も必ず null になる（H が None のため P 行列を
-    # 引けない）。この前提が実際の評価エンジンの出力と食い違うため、
-    # web/data/ 向けにはこの1件だけを除外する（floodbcp の実出力は書き換えず、
-    # 除外するだけ）。data/samples/ 自体・floodbcp CLI・他のテストは
-    # insufficient_data を含む全件をそのまま扱う（tests/test_cli.py 参照）。
-    web_pairs = [(f, a) for f, a in zip(features, assessments) if a.status != "insufficient_data"]
-    web_features = [f for f, _ in web_pairs]
-    web_assessments = [a for _, a in web_pairs]
+    # TASK-008：status=insufficient_data（H・P・priority が算出不能）の建物も
+    # 除外せず、全件を web/data/ に出力する。「情報がない＝安全」と誤認させない
+    # ため、ビューア側（web/lib/join.js・web/app.js）が insufficient_data を
+    # 「評価不能（データ不足）」として明示表示する（除外ではなく表示で対応する）。
+    web_features = list(features)
+    web_assessments = list(assessments)
 
     assessments_out = Path(assessments_out)
     buildings_out = Path(buildings_out)
@@ -322,10 +317,7 @@ def main(argv: list[str] | None = None) -> int:
 
     summary = build(features_path=args.features, answers_path=args.answers)
     print(f"評価件数: {summary['building_count']}  優先度・ステータス内訳: {summary['priority_counts']}")
-    print(
-        f"web/data/ へ出力: {summary['web_building_count']} 件"
-        f"（insufficient_data の {summary['building_count'] - summary['web_building_count']} 件は除外。詳細はスクリプト内コメント参照）"
-    )
+    print(f"web/data/ へ出力: {summary['web_building_count']} 件（insufficient_data も除外せず含む）")
     print(f"生成: {summary['assessments_out']}")
     print(f"生成: {summary['buildings_out']}")
     print(f"生成: {summary['measures_out']}")

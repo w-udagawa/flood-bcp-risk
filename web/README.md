@@ -23,7 +23,7 @@ python3 -m http.server 8000
 | `index.html` | 地図・フィルタ・検索・凡例・カルテ用サイドパネルの DOM とスタイル、出典・免責表示 |
 | `app.js` | データ読込、地図初期化・レイヤ切替、フィルタ/検索の適用、建物カルテ描画（DOM 操作） |
 | `lib/join.js` | `buildings.geojson` と `assessments.json` を `building_id` で結合する純関数、色・ラベル関数。ブラウザ（`window.FloodBcpJoin`）と Node（`node --test`）の両方から使える UMD 風モジュール |
-| `data/buildings_sample.geojson` | 架空のサンプル建物ポリゴン（目黒区自由が丘駅周辺、おおよそ 35.6075N, 139.6690E）。`scripts/build_demo.py` で生成 |
+| `data/buildings_sample.geojson` | 架空のサンプル建物ポリゴン（おおよそ 35.6075N, 139.6690E 付近を中心とした架空の座標）。`scripts/build_demo.py` で生成 |
 | `data/assessments_sample.json` | 上記に対応する評価結果（`docs/03_スコアリング仕様.md` 第11章のスキーマに準拠）。`floodbcp`（評価エンジン）の実出力そのもの。`scripts/build_demo.py` で生成 |
 | `data/measures.json` | 対策候補メニュー M-01〜M-11。正本 `config/measures.json` から `scripts/build_demo.py` で生成（二重管理をやめた） |
 | `tests/join.test.js` | `lib/join.js` のユニットテスト（`node --test`） |
@@ -144,12 +144,15 @@ TASK-005 は試作であり、以下は仕様書の全機能ではなく縮小�
 
 ## サンプルデータについて
 
-`data/` 配下のデータはすべて架空であり、`scripts/build_demo.py`（TASK-007）で生成する。
-`buildings_sample.geojson` は目黒区自由が丘駅周辺のおおよその座標（35.6075N, 139.6690E）
-を中心に、建物 ID ごとに決定的（ID からのハッシュで乱数シード）に生成した矩形ポリゴンで
-あり、実在の建物・施設・住所とは一切関係ない。`assessments_sample.json` は
+`data/` 配下のデータはすべて架空であり、`scripts/build_demo.py`（TASK-007／TASK-008）で
+生成する。`buildings_sample.geojson` はおおよその座標（35.6075N, 139.6690E 付近）を
+中心に、建物 ID ごとに決定的（ID からのハッシュで乱数シード）に生成した矩形ポリゴンで
+あり、実在の建物・施設・住所とは一切関係ない。名称（`name`）も含め、実在の駅名・地名・
+区名は一切含まない（`data/samples/README.md` 参照）。`assessments_sample.json` は
 `data/samples/features_sample.csv`・`answers_sample.csv`（同じく架空データ）に対する
-`floodbcp` の実出力であり、`status=insufficient_data`（浸水想定データ・実績・窪地情報が
-すべてなく H が算出不能）の1件のみ、優先度が必ず null になるためビューア表示からは
-除外している（詳細は `scripts/build_demo.py` 内のコメントを参照）。件数を含め、
-再生成すると `data/samples/` の内容に応じて変わりうる。
+`floodbcp` の実出力であり、**除外している建物はない**。`status=insufficient_data`
+（浸水想定データ・実績・窪地情報がすべてなく H が算出不能）の建物も他の建物と同じく
+`web/data/` に出力され、ビューア側（`web/lib/join.js`・`web/app.js`）が「評価不能
+（データ不足）」として明示表示する（TASK-008。「情報がない＝安全」と誤認させないため、
+D＝現状対応不要とは別の色・別ラベルで区別する）。件数を含め、再生成すると
+`data/samples/` の内容に応じて変わりうる。
