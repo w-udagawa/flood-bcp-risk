@@ -21,7 +21,7 @@
 ### ローカルでの実行手順（概略）
 
 ```bash
-cd flood-bcp-risk
+cd <リポジトリルート>
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r pipelines/requirements-etl.txt
 # GIS バイナリ依存が必要な場合（Ubuntu 例）:

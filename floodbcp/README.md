@@ -34,7 +34,7 @@ Python 3.11 標準ライブラリのみで動作します（外部依存なし�
 ## CLI
 
 ```bash
-cd flood-bcp-risk
+cd <リポジトリルート>
 
 # 一括評価
 python3 -m floodbcp assess \

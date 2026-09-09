@@ -9,7 +9,7 @@ GeoJSON/JSON で構成する。
 npm は使わない。ビルドも不要。Python 3 標準の HTTP サーバで `web/` を配信する。
 
 ```sh
-cd flood-bcp-risk/web
+cd web
 python3 -m http.server 8000
 ```
 

@@ -31,7 +31,6 @@ tests/        スコアリングエンジンのテスト
 ## 使い方（スコアリングエンジン）
 
 ```bash
-cd flood-bcp-risk
 python3 -m unittest discover -s tests -v
 python3 -m floodbcp assess --features data/samples/features_sample.csv \
   --answers data/samples/answers_sample.csv --out out.json --csv out.csv

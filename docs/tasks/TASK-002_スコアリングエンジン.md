@@ -34,7 +34,7 @@
   - `data/samples/README.md`：架空データである旨、列の説明
   - `floodbcp/README.md`：使い方、設計（設定駆動、evidence の意味）
 - 受入基準：
-  - [ ] `cd flood-bcp-risk && python3 -m unittest discover -s tests -v` が全件成功
+  - [ ] `python3 -m unittest discover -s tests -v` が全件成功
   - [ ] `python3 -m floodbcp assess --features data/samples/features_sample.csv --answers data/samples/answers_sample.csv --out /tmp/out.json --csv /tmp/out.csv` が成功し、優先度 A〜D と status の各種が出る
   - [ ] `python3 -c "import floodbcp"` が標準ライブラリのみで通る（`grep -r "^import\|^from" floodbcp/` に外部パッケージがない）
   - [ ] マトリクス・閾値の数値がソースコードにハードコードされていない（JSON から読む）
