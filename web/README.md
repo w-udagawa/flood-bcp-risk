@@ -23,9 +23,9 @@ python3 -m http.server 8000
 | `index.html` | 地図・フィルタ・検索・凡例・カルテ用サイドパネルの DOM とスタイル、出典・免責表示 |
 | `app.js` | データ読込、地図初期化・レイヤ切替、フィルタ/検索の適用、建物カルテ描画（DOM 操作） |
 | `lib/join.js` | `buildings.geojson` と `assessments.json` を `building_id` で結合する純関数、色・ラベル関数。ブラウザ（`window.FloodBcpJoin`）と Node（`node --test`）の両方から使える UMD 風モジュール |
-| `data/buildings_sample.geojson` | 架空のサンプル建物ポリゴン 15 件（目黒区自由が丘駅周辺、おおよそ 35.6075N, 139.6690E） |
-| `data/assessments_sample.json` | 上記に対応する架空の評価結果 15 件（`docs/03_スコアリング仕様.md` 第11章のスキーマに準拠） |
-| `data/measures.json` | 対策候補メニュー M-01〜M-11（`docs/03_スコアリング仕様.md` 第13章の複製。正本は将来 `config/measures.json`） |
+| `data/buildings_sample.geojson` | 架空のサンプル建物ポリゴン（目黒区自由が丘駅周辺、おおよそ 35.6075N, 139.6690E）。`scripts/build_demo.py` で生成 |
+| `data/assessments_sample.json` | 上記に対応する評価結果（`docs/03_スコアリング仕様.md` 第11章のスキーマに準拠）。`floodbcp`（評価エンジン）の実出力そのもの。`scripts/build_demo.py` で生成 |
+| `data/measures.json` | 対策候補メニュー M-01〜M-11。正本 `config/measures.json` から `scripts/build_demo.py` で生成（二重管理をやめた） |
 | `tests/join.test.js` | `lib/join.js` のユニットテスト（`node --test`） |
 
 ## CDN 依存
@@ -99,17 +99,17 @@ TASK-005 は試作であり、以下は仕様書の全機能ではなく縮小�
   `assessment.priority_raised_by_low_confidence === true` の建物のみを抽出する
   仕様として実装した。要件定義書・スコアリング仕様書に「要確認のみ」フィルタの
   厳密な定義がなかったため、この解釈で実装している。
-- **不足情報・優先確認事項・対策候補の生成**：本来はスコアリングエンジン
-  （`floodbcp/`、別タスク）が `docs/03_スコアリング仕様.md` 第12・13章の規則に従って
-  算出し `assessments.json` に格納する。本試作のサンプルデータはビューア単体で
-  動作確認するために `web/` 側で簡略化した生成ロジック（V≥2、I≥3 の条件のみ）で
-  作成した架空データであり、Q1〜Q12（簡易診断）や `footprint_area_m2`・
-  `depression_flag`・`rel_elev_m` を用いる対策候補（M-02〜M-06、M-08、M-09、M-11 等）
-  は反映していない。実データでは `floodbcp/` の出力をそのまま `data/` に配置すればよい。
+- **不足情報・優先確認事項・対策候補の生成**（TASK-007 で更新）：`data/assessments_sample.json`
+  は `scripts/build_demo.py` がスコアリングエンジン（`floodbcp/`）を
+  `data/samples/features_sample.csv` + `answers_sample.csv` に対して実行した実出力そのもの
+  であり、`docs/03_スコアリング仕様.md` 第12・13章の規則に従って missing_info・
+  priority_checks・measures が算出されている（web 側での簡略化ロジックは廃止した）。
 - **簡易診断（Tier 1、FR-09）へのリンク**：カルテ内に導線の説明文のみ表示し、
   実際の12問フォームは実装していない（非公開層 `api/` が必要なため、フェーズ2）。
-- **管理施設一覧・レポート出力（FR-08、FR-11）**：本試作の対象外（TASK-005 の
-  出力物に含まれない）。
+- **管理施設一覧・レポート出力（FR-08、FR-11）**：本試作（静的ビューア）自体には
+  レポート出力 UI はない。CLI 側で `python3 -m floodbcp report`
+  （TASK-007）が優先現地調査リスト・管理施設一覧を CSV（UTF-8 BOM 付き）で出力する。
+  ブラウザから直接ダウンロードする導線は未実装（フェーズ2、非公開層 `api/` が必要）。
 - **ハザード種別・DEM・実績・地形分類レイヤ（FR-04 の一部）**：本試作は
   優先度・H・V・I・C の色分けのみ実装。内水／洪水／高潮個別レイヤ、DEM 陰影、
   実績レイヤ、地形分類レイヤは未実装（要件定義書 11章の「マップ」要素の一部を
@@ -144,6 +144,12 @@ TASK-005 は試作であり、以下は仕様書の全機能ではなく縮小�
 
 ## サンプルデータについて
 
-`data/` 配下のデータはすべて架空である。目黒区自由が丘駅周辺のおおよその座標
-（35.6075N, 139.6690E）を中心に、実在しない矩形ポリゴン15件・施設名・住所を
-機械的に生成したものであり、実在の建物・施設・住所とは一切関係ない。
+`data/` 配下のデータはすべて架空であり、`scripts/build_demo.py`（TASK-007）で生成する。
+`buildings_sample.geojson` は目黒区自由が丘駅周辺のおおよその座標（35.6075N, 139.6690E）
+を中心に、建物 ID ごとに決定的（ID からのハッシュで乱数シード）に生成した矩形ポリゴンで
+あり、実在の建物・施設・住所とは一切関係ない。`assessments_sample.json` は
+`data/samples/features_sample.csv`・`answers_sample.csv`（同じく架空データ）に対する
+`floodbcp` の実出力であり、`status=insufficient_data`（浸水想定データ・実績・窪地情報が
+すべてなく H が算出不能）の1件のみ、優先度が必ず null になるためビューア表示からは
+除外している（詳細は `scripts/build_demo.py` 内のコメントを参照）。件数を含め、
+再生成すると `data/samples/` の内容に応じて変わりうる。

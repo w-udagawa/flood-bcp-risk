@@ -35,7 +35,26 @@ python3 -m unittest discover -s tests -v
 python3 -m floodbcp assess --features data/samples/features_sample.csv \
   --answers data/samples/answers_sample.csv --out out.json --csv out.csv
 python3 -m floodbcp explain --features data/samples/features_sample.csv --building-id <id>
+
+# FR-11: 評価結果からレポート（優先現地調査リスト・管理施設一覧、CSV/UTF-8 BOM付き）を出力する
+python3 -m floodbcp report --assessments out.json \
+  --features data/samples/features_sample.csv \
+  --priority-list priority.csv --facility-list facilities.csv
 ```
+
+## デモ用データの生成（web/ ビューア向け）
+
+`web/data/` の `assessments_sample.json` / `buildings_sample.geojson` / `measures.json` は
+手書きせず、以下のスクリプトで `data/samples/` と `floodbcp` の実出力・`config/measures.json`
+から生成する（TASK-007。二重管理を避け、ビューアのデータが常にスコアリングエンジンの
+実出力と一致することを保証する）。
+
+```bash
+python3 scripts/build_demo.py
+```
+
+生成後、自動で `node --test 'web/tests/*.test.js'` を実行して結果を表示する
+（node が見つからない場合はスキップ表示のみ）。
 
 ## 免責
 

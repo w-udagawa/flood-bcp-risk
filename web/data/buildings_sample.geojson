@@ -1,9 +1,5 @@
 {
   "type": "FeatureCollection",
-  "name": "buildings_sample",
-  "properties": {
-    "note": "架空のサンプルデータです。実在の建物・施設・住所ではありません。"
-  },
   "features": [
     {
       "type": "Feature",
@@ -12,43 +8,35 @@
         "coordinates": [
           [
             [
-              139.6679724,
-              35.606943
+              139.6670885,
+              35.6067282
             ],
             [
-              139.6681713,
-              35.606943
+              139.6677805,
+              35.6067282
             ],
             [
-              139.6681713,
-              35.6070688
+              139.6677805,
+              35.6071872
             ],
             [
-              139.6679724,
-              35.6070688
+              139.6670885,
+              35.6071872
             ],
             [
-              139.6679724,
-              35.606943
+              139.6670885,
+              35.6067282
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_001",
-        "name": "サンプル救護センター北棟",
+        "name": "架空:目黒プラザ（サンプルデータ）",
+        "usage_class": "commercial_large",
         "ward_code": "13110",
-        "usage_code": "sample_hospital",
-        "usage_class": "hospital",
-        "storeys_above": 3,
-        "storeys_below": 2,
-        "height_m": 12,
-        "year_built": 1985,
-        "total_floor_area_m2": 8200,
-        "footprint_area_m2": 2733,
-        "address": "東京都目黒区サンプル町1丁目1-1（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "storeys_below": 1,
+        "total_floor_area_m2": 12000.0
       }
     },
     {
@@ -58,43 +46,35 @@
         "coordinates": [
           [
             [
-              139.6684144,
-              35.6069296
+              139.6721471,
+              35.6033673
             ],
             [
-              139.6686575,
-              35.6069296
+              139.6724887,
+              35.6033673
             ],
             [
-              139.6686575,
-              35.6070823
+              139.6724887,
+              35.6036288
             ],
             [
-              139.6684144,
-              35.6070823
+              139.6721471,
+              35.6036288
             ],
             [
-              139.6684144,
-              35.6069296
+              139.6721471,
+              35.6033673
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_002",
-        "name": "サンプル自由が丘連絡駅舎",
-        "ward_code": "13110",
-        "usage_code": "sample_station",
-        "usage_class": "station",
-        "storeys_above": 4,
-        "storeys_below": 1,
-        "height_m": 16,
-        "year_built": 1986,
-        "total_floor_area_m2": 5400,
-        "footprint_area_m2": 1350,
-        "address": "東京都目黒区サンプル町2丁目2-2（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "name": "架空:せたがや中央病院（サンプルデータ）",
+        "usage_class": "hospital",
+        "ward_code": "13112",
+        "storeys_below": 0,
+        "total_floor_area_m2": 2500.0
       }
     },
     {
@@ -104,43 +84,35 @@
         "coordinates": [
           [
             [
-              139.6688564,
-              35.6069161
+              139.6750648,
+              35.6060365
             ],
             [
-              139.6691436,
-              35.6069161
+              139.6751758,
+              35.6060365
             ],
             [
-              139.6691436,
-              35.6070958
+              139.6751758,
+              35.6062377
             ],
             [
-              139.6688564,
-              35.6070958
+              139.6750648,
+              35.6062377
             ],
             [
-              139.6688564,
-              35.6069161
+              139.6750648,
+              35.6060365
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_003",
-        "name": "サンプルデータ保管センター",
+        "name": "架空:個人住宅A（サンプルデータ）",
+        "usage_class": "residential",
         "ward_code": "13110",
-        "usage_code": "sample_datacenter",
-        "usage_class": "datacenter",
-        "storeys_above": 5,
-        "storeys_below": 2,
-        "height_m": 20,
-        "year_built": 1987,
-        "total_floor_area_m2": 3100,
-        "footprint_area_m2": 620,
-        "address": "東京都目黒区サンプル町3丁目3-3（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "storeys_below": 0,
+        "total_floor_area_m2": 120.0
       }
     },
     {
@@ -150,43 +122,35 @@
         "coordinates": [
           [
             [
-              139.6693646,
-              35.6069026
+              139.6644484,
+              35.6107298
             ],
             [
-              139.6695635,
-              35.6069026
+              139.6645886,
+              35.6107298
             ],
             [
-              139.6695635,
-              35.6071092
+              139.6645886,
+              35.610889
             ],
             [
-              139.6693646,
-              35.6071092
+              139.6644484,
+              35.610889
             ],
             [
-              139.6693646,
-              35.6069026
+              139.6644484,
+              35.6107298
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_004",
-        "name": "サンプル区民防災センター",
+        "name": "架空:雑用途小規模棟（サンプルデータ）",
+        "usage_class": "other",
         "ward_code": "13110",
-        "usage_code": "sample_public_critical",
-        "usage_class": "public_critical",
-        "storeys_above": 6,
-        "storeys_below": 1,
-        "height_m": 24,
-        "year_built": 1988,
-        "total_floor_area_m2": 4200,
-        "footprint_area_m2": 700,
-        "address": "東京都目黒区サンプル町4丁目4-4（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "storeys_below": 0,
+        "total_floor_area_m2": 800.0
       }
     },
     {
@@ -196,43 +160,35 @@
         "coordinates": [
           [
             [
-              139.6698066,
-              35.606943
+              139.6719013,
+              35.6035589
             ],
             [
-              139.6700497,
-              35.606943
+              139.6720323,
+              35.6035589
             ],
             [
-              139.6700497,
-              35.6070688
+              139.6720323,
+              35.6037293
             ],
             [
-              139.6698066,
-              35.6070688
+              139.6719013,
+              35.6037293
             ],
             [
-              139.6698066,
-              35.606943
+              139.6719013,
+              35.6035589
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_005",
-        "name": "サンプル福祉ケアホーム",
+        "name": "架空:複合用途棟（サンプルデータ）",
+        "usage_class": "other",
         "ward_code": "13110",
-        "usage_code": "sample_welfare",
-        "usage_class": "welfare",
-        "storeys_above": 7,
         "storeys_below": 1,
-        "height_m": 28,
-        "year_built": 1989,
-        "total_floor_area_m2": 2600,
-        "footprint_area_m2": 867,
-        "address": "東京都目黒区サンプル町1丁目5-5（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "total_floor_area_m2": 4200.0
       }
     },
     {
@@ -242,89 +198,35 @@
         "coordinates": [
           [
             [
-              139.6679282,
-              35.6074236
+              139.6730268,
+              35.609936
             ],
             [
-              139.6682155,
-              35.6074236
+              139.6731812,
+              35.609936
             ],
             [
-              139.6682155,
-              35.6075764
+              139.6731812,
+              35.6100806
             ],
             [
-              139.6679282,
-              35.6075764
+              139.6730268,
+              35.6100806
             ],
             [
-              139.6679282,
-              35.6074236
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "building_id": "bldg_sample_006",
-        "name": "サンプル商業モール東棟",
-        "ward_code": "13110",
-        "usage_code": "sample_commercial_large",
-        "usage_class": "commercial_large",
-        "storeys_above": 8,
-        "storeys_below": 0,
-        "height_m": 32,
-        "year_built": 1990,
-        "total_floor_area_m2": 9800,
-        "footprint_area_m2": 2450,
-        "address": "東京都目黒区サンプル町2丁目6-1（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              139.6684365,
-              35.6074102
-            ],
-            [
-              139.6686354,
-              35.6074102
-            ],
-            [
-              139.6686354,
-              35.6075898
-            ],
-            [
-              139.6684365,
-              35.6075898
-            ],
-            [
-              139.6684365,
-              35.6074102
+              139.6730268,
+              35.609936
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_007",
-        "name": "サンプル雑貨ストア",
-        "ward_code": "13110",
-        "usage_code": "sample_commercial",
+        "name": "架空:大田商店街C（サンプルデータ）",
         "usage_class": "commercial",
-        "storeys_above": 3,
-        "storeys_below": 1,
-        "height_m": 12,
-        "year_built": 1991,
-        "total_floor_area_m2": 1200,
-        "footprint_area_m2": 240,
-        "address": "東京都目黒区サンプル町3丁目7-2（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "ward_code": "13113",
+        "storeys_below": 0,
+        "total_floor_area_m2": 1800.0
       }
     },
     {
@@ -334,43 +236,35 @@
         "coordinates": [
           [
             [
-              139.6688785,
-              35.6073967
+              139.6705424,
+              35.6122073
             ],
             [
-              139.6691215,
-              35.6073967
+              139.6706957,
+              35.6122073
             ],
             [
-              139.6691215,
-              35.6076033
+              139.6706957,
+              35.6123529
             ],
             [
-              139.6688785,
-              35.6076033
+              139.6705424,
+              35.6123529
             ],
             [
-              139.6688785,
-              35.6073967
+              139.6705424,
+              35.6122073
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_008",
-        "name": "サンプル事務所ビルA",
+        "name": "架空:自由が丘駅ビル（サンプルデータ）",
+        "usage_class": "station",
         "ward_code": "13110",
-        "usage_code": "sample_office",
-        "usage_class": "office",
-        "storeys_above": 4,
-        "storeys_below": 0,
-        "height_m": 16,
-        "year_built": 1992,
-        "total_floor_area_m2": 3400,
-        "footprint_area_m2": 567,
-        "address": "東京都目黒区サンプル町4丁目8-3（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "storeys_below": null,
+        "total_floor_area_m2": 9000.0
       }
     },
     {
@@ -380,43 +274,35 @@
         "coordinates": [
           [
             [
-              139.6693204,
-              35.6074371
+              139.6634109,
+              35.605401
             ],
             [
-              139.6696077,
-              35.6074371
+              139.6635422,
+              35.605401
             ],
             [
-              139.6696077,
-              35.6075629
+              139.6635422,
+              35.6055711
             ],
             [
-              139.6693204,
-              35.6075629
+              139.6634109,
+              35.6055711
             ],
             [
-              139.6693204,
-              35.6074371
+              139.6634109,
+              35.605401
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_009",
-        "name": "サンプル物流センター南",
-        "ward_code": "13110",
-        "usage_code": "sample_logistics",
-        "usage_class": "logistics",
-        "storeys_above": 5,
-        "storeys_below": 1,
-        "height_m": 20,
-        "year_built": 1993,
-        "total_floor_area_m2": 6600,
-        "footprint_area_m2": 2200,
-        "address": "東京都目黒区サンプル町1丁目9-4（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "name": "架空:等々力駅舎（サンプルデータ）",
+        "usage_class": "station",
+        "ward_code": "13112",
+        "storeys_below": 0,
+        "total_floor_area_m2": 1200.0
       }
     },
     {
@@ -426,43 +312,35 @@
         "coordinates": [
           [
             [
-              139.6698287,
-              35.6074236
+              139.6655008,
+              35.6058393
             ],
             [
-              139.6700276,
-              35.6074236
+              139.6656404,
+              35.6058393
             ],
             [
-              139.6700276,
-              35.6075764
+              139.6656404,
+              35.6059993
             ],
             [
-              139.6698287,
-              35.6075764
+              139.6655008,
+              35.6059993
             ],
             [
-              139.6698287,
-              35.6074236
+              139.6655008,
+              35.6058393
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_010",
-        "name": "サンプル学園校舎",
-        "ward_code": "13110",
-        "usage_code": "sample_school",
-        "usage_class": "school",
-        "storeys_above": 6,
-        "storeys_below": 0,
-        "height_m": 24,
-        "year_built": 1994,
-        "total_floor_area_m2": 5100,
-        "footprint_area_m2": 1275,
-        "address": "東京都目黒区サンプル町2丁目1-5（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "name": "架空:大田データセンター（サンプルデータ）",
+        "usage_class": "datacenter",
+        "ward_code": "13113",
+        "storeys_below": 2,
+        "total_floor_area_m2": 15000.0
       }
     },
     {
@@ -472,43 +350,35 @@
         "coordinates": [
           [
             [
-              139.6679503,
-              35.6079042
+              139.6683288,
+              35.6074005
             ],
             [
-              139.6681934,
-              35.6079042
+              139.6685578,
+              35.6074005
             ],
             [
-              139.6681934,
-              35.6080839
+              139.6685578,
+              35.6074981
             ],
             [
-              139.6679503,
-              35.6080839
+              139.6683288,
+              35.6074981
             ],
             [
-              139.6679503,
-              35.6079042
+              139.6683288,
+              35.6074005
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_011",
-        "name": "サンプル集合住宅（大規模）",
+        "name": "架空:目黒区防災センター（サンプルデータ）",
+        "usage_class": "public_critical",
         "ward_code": "13110",
-        "usage_code": "sample_residential_large",
-        "usage_class": "residential_large",
-        "storeys_above": 7,
-        "storeys_below": 0,
-        "height_m": 28,
-        "year_built": 1995,
-        "total_floor_area_m2": 7200,
-        "footprint_area_m2": 1440,
-        "address": "東京都目黒区サンプル町3丁目2-1（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "storeys_below": 1,
+        "total_floor_area_m2": 8000.0
       }
     },
     {
@@ -518,43 +388,35 @@
         "coordinates": [
           [
             [
-              139.6683923,
-              35.6078908
+              139.668722,
+              35.6087628
             ],
             [
-              139.6686796,
-              35.6078908
+              139.6688409,
+              35.6087628
             ],
             [
-              139.6686796,
-              35.6080974
+              139.6688409,
+              35.6089506
             ],
             [
-              139.6683923,
-              35.6080974
+              139.668722,
+              35.6089506
             ],
             [
-              139.6683923,
-              35.6078908
+              139.668722,
+              35.6087628
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_012",
-        "name": "サンプル複合商業ビル",
-        "ward_code": "13110",
-        "usage_code": "sample_commercial",
-        "usage_class": "commercial",
-        "storeys_above": 8,
-        "storeys_below": 2,
-        "height_m": 32,
-        "year_built": 1996,
-        "total_floor_area_m2": 4400,
-        "footprint_area_m2": 733,
-        "address": "東京都目黒区サンプル町4丁目3-2（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "name": "架空:せたがや特別養護老人ホーム（サンプルデータ）",
+        "usage_class": "welfare",
+        "ward_code": "13112",
+        "storeys_below": 0,
+        "total_floor_area_m2": 3500.0
       }
     },
     {
@@ -564,43 +426,35 @@
         "coordinates": [
           [
             [
-              139.6689006,
-              35.6079312
+              139.6713544,
+              35.6025614
             ],
             [
-              139.6690994,
-              35.6079312
+              139.6715445,
+              35.6025614
             ],
             [
-              139.6690994,
-              35.608057
+              139.6715445,
+              35.6026788
             ],
             [
-              139.6689006,
-              35.608057
+              139.6713544,
+              35.6026788
             ],
             [
-              139.6689006,
-              35.6079312
+              139.6713544,
+              35.6025614
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_013",
-        "name": "サンプル事務所ビルB",
-        "ward_code": "13110",
-        "usage_code": "sample_office",
-        "usage_class": "office",
-        "storeys_above": 3,
-        "storeys_below": 1,
-        "height_m": 12,
-        "year_built": 1997,
-        "total_floor_area_m2": 3900,
-        "footprint_area_m2": 1300,
-        "address": "東京都目黒区サンプル町1丁目4-3（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "name": "架空:大田物流センター大（サンプルデータ）",
+        "usage_class": "logistics",
+        "ward_code": "13113",
+        "storeys_below": 0,
+        "total_floor_area_m2": 15000.0
       }
     },
     {
@@ -610,43 +464,35 @@
         "coordinates": [
           [
             [
-              139.6693425,
-              35.6079177
+              139.6674305,
+              35.6091964
             ],
             [
-              139.6695856,
-              35.6079177
+              139.6676482,
+              35.6091964
             ],
             [
-              139.6695856,
-              35.6080704
+              139.6676482,
+              35.609299
             ],
             [
-              139.6693425,
-              35.6080704
+              139.6674305,
+              35.609299
             ],
             [
-              139.6693425,
-              35.6079177
+              139.6674305,
+              35.6091964
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_014",
-        "name": "サンプル小規模事務所",
-        "ward_code": "13110",
-        "usage_code": "sample_office",
-        "usage_class": "office",
-        "storeys_above": 4,
-        "storeys_below": 1,
-        "height_m": 16,
-        "year_built": 1998,
-        "total_floor_area_m2": 900,
-        "footprint_area_m2": 225,
-        "address": "東京都目黒区サンプル町2丁目5-4（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "name": "架空:大田物流センター小（サンプルデータ）",
+        "usage_class": "logistics",
+        "ward_code": "13113",
+        "storeys_below": 0,
+        "total_floor_area_m2": 4000.0
       }
     },
     {
@@ -656,43 +502,225 @@
         "coordinates": [
           [
             [
-              139.6697845,
-              35.6079042
+              139.6717763,
+              35.609223
             ],
             [
-              139.6700718,
-              35.6079042
+              139.6719329,
+              35.609223
             ],
             [
-              139.6700718,
-              35.6080839
+              139.6719329,
+              35.6093656
             ],
             [
-              139.6697845,
-              35.6080839
+              139.6717763,
+              35.6093656
             ],
             [
-              139.6697845,
-              35.6079042
+              139.6717763,
+              35.609223
             ]
           ]
         ]
       },
       "properties": {
         "building_id": "bldg_sample_015",
-        "name": "サンプル集合住宅",
+        "name": "架空:目黒第三小学校（サンプルデータ）",
+        "usage_class": "school",
         "ward_code": "13110",
-        "usage_code": "sample_residential",
-        "usage_class": "residential",
-        "storeys_above": 5,
+        "storeys_below": 0,
+        "total_floor_area_m2": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              139.6671821,
+              35.6030101
+            ],
+            [
+              139.6673804,
+              35.6030101
+            ],
+            [
+              139.6673804,
+              35.6031227
+            ],
+            [
+              139.6671821,
+              35.6031227
+            ],
+            [
+              139.6671821,
+              35.6030101
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "bldg_sample_016",
+        "name": "架空:せたがやタワーレジデンス（サンプルデータ）",
+        "usage_class": "residential_large",
+        "ward_code": "13112",
+        "storeys_below": 1,
+        "total_floor_area_m2": 18000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              139.6653638,
+              35.6102124
+            ],
+            [
+              139.6655093,
+              35.6102124
+            ],
+            [
+              139.6655093,
+              35.6103659
+            ],
+            [
+              139.6653638,
+              35.6103659
+            ],
+            [
+              139.6653638,
+              35.6102124
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "bldg_sample_017",
+        "name": "架空:大田オフィスD（サンプルデータ）",
+        "usage_class": "office",
+        "ward_code": "13113",
+        "storeys_below": 1,
+        "total_floor_area_m2": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              139.673653,
+              35.610342
+            ],
+            [
+              139.6738109,
+              35.610342
+            ],
+            [
+              139.6738109,
+              35.6104834
+            ],
+            [
+              139.673653,
+              35.6104834
+            ],
+            [
+              139.673653,
+              35.610342
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "bldg_sample_018",
+        "name": "架空:自由が丘商店D（サンプルデータ）",
+        "usage_class": "commercial",
+        "ward_code": "13110",
+        "storeys_below": 0,
+        "total_floor_area_m2": 1200.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              139.6639811,
+              35.604909
+            ],
+            [
+              139.6641221,
+              35.604909
+            ],
+            [
+              139.6641221,
+              35.6050674
+            ],
+            [
+              139.6639811,
+              35.6050674
+            ],
+            [
+              139.6639811,
+              35.604909
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "bldg_sample_019",
+        "name": "架空:目黒モール（地下階不明）（サンプルデータ）",
+        "usage_class": "commercial_large",
+        "ward_code": "13110",
         "storeys_below": null,
-        "height_m": 20,
-        "year_built": 1999,
-        "total_floor_area_m2": 2100,
-        "footprint_area_m2": 420,
-        "address": "東京都目黒区サンプル町3丁目6-5（架空）",
-        "source_version": "sample-plateau-2025",
-        "fetched_at": "2026-08-15T00:00:00Z"
+        "total_floor_area_m2": 11000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              139.6693807,
+              35.6020468
+            ],
+            [
+              139.6695079,
+              35.6020468
+            ],
+            [
+              139.6695079,
+              35.6022224
+            ],
+            [
+              139.6693807,
+              35.6022224
+            ],
+            [
+              139.6693807,
+              35.6020468
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "bldg_sample_020",
+        "name": "架空:大田臨海倉庫（サンプルデータ）",
+        "usage_class": "logistics",
+        "ward_code": "13113",
+        "storeys_below": 0,
+        "total_floor_area_m2": 8000.0
       }
     }
   ]

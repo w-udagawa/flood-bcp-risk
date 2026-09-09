@@ -28,7 +28,10 @@ Python 3.11 標準ライブラリのみで動作します（外部依存なし�
 - `scoring.py`：`assess(feature, answers=None, config=None, measures_config=None, computed_at=None) -> Assessment`。
   H/V/I/C/P/priority/status/evidence/missing_info/priority_checks/measures を算出する。
 - `measures.py`：`config/measures.json` の対策候補条件を評価する。
-- `report.py`：`Assessment` の一覧を JSON / CSV に書き出す。
+- `report.py`：`Assessment` の一覧を JSON / CSV に書き出す。加えて FR-11
+  （`docs/02_要件定義書.md`）のレポート出力として、優先現地調査リスト
+  （`write_priority_list_csv`：優先度 A/A*/B/B* を優先度順→P降順→C昇順で整列）と
+  管理施設一覧（`write_facility_list_csv`：全建物）を UTF-8 BOM 付き CSV で出力する。
 - `__main__.py`：CLI（下記）。
 
 ## CLI
@@ -48,6 +51,15 @@ python3 -m floodbcp explain \
   --features data/samples/features_sample.csv \
   --building-id bldg_sample_001 \
   --answers data/samples/answers_sample.csv
+
+# FR-11: 評価結果（assess --out の JSON）からレポート（優先現地調査リスト・
+# 管理施設一覧、CSV/UTF-8 BOM付き）を出力する。--features は name/ward_code/usage_class
+# 補完用（任意。省略すると空欄になる）
+python3 -m floodbcp report \
+  --assessments out.json \
+  --features data/samples/features_sample.csv \
+  --priority-list priority.csv \
+  --facility-list facilities.csv
 ```
 
 `--config` / `--measures-config` で設定 JSON を差し替えられる（省略時は
